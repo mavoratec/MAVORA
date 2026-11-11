@@ -1,112 +1,281 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b1224">
-  <meta name="description" content="MAVORA — ferramentas inteligentes para ajudar seu negócio a precificar melhor.">
-  <title>MAVORA — Preço Inteligente</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#071a33">
+  <meta name="description" content="MAVORA — calculadoras de precificação e informação prática para empreendedores.">
+  <title>MAVORA — Precificação inteligente para empreendedores</title>
   <style>
-    :root{--bg:#08101f;--panel:#111d33;--panel2:#162541;--text:#f4f7ff;--muted:#aab7cf;--blue:#477cff;--cyan:#64d8ff;--line:#293a59;--green:#46d39a}
-    *{box-sizing:border-box} html{scroll-behavior:smooth}
-    body{margin:0;background:radial-gradient(ellipse at 80% 0%,#172b50 0,transparent 38%),var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-    a{color:inherit;text-decoration:none}.wrap{width:min(1100px,92%);margin:auto}
-    header{padding:22px 0;border-bottom:1px solid #ffffff12}
-    nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .brand{font-size:1.55rem;font-weight:900;letter-spacing:.13em}.brand span{color:var(--cyan)}
-    .navlink{color:var(--muted);font-size:.94rem}
-    .hero{padding:76px 0 58px;display:grid;grid-template-columns:1.1fr .9fr;gap:42px;align-items:center}
-    .eyebrow{color:var(--cyan);font-weight:700;text-transform:uppercase;letter-spacing:.15em;font-size:.76rem}
-    h1{font-size:clamp(2.4rem,6vw,4.6rem);line-height:1.04;margin:14px 0 20px;letter-spacing:-.045em}
-    h1 em{font-style:normal;color:var(--cyan)}
-    .lead{font-size:1.12rem;color:var(--muted);max-width:600px}
-    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
-    .btn{border:0;border-radius:12px;padding:13px 19px;font-weight:800;cursor:pointer;display:inline-block}
-    .primary{background:linear-gradient(120deg,var(--blue),#315bd0);color:white;box-shadow:0 9px 28px #315bd044}
-    .secondary{border:1px solid var(--line);color:var(--text);background:#ffffff08}
-    .mock{background:linear-gradient(145deg,#172846,#101a2e);border:1px solid #344968;border-radius:22px;padding:24px;box-shadow:0 25px 80px #0006}
-    .mocktop{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.85rem}
-    .pill{border:1px solid #3c5d8b;color:var(--cyan);border-radius:99px;padding:4px 10px;font-size:.75rem}
-    .mock h2{font-size:1.35rem;margin:24px 0 5px}.bigprice{font-size:2.6rem;font-weight:900;letter-spacing:-.04em}
-    .bars{display:grid;gap:12px;margin-top:22px}.bar{height:9px;border-radius:99px;background:#263957;overflow:hidden}.bar i{display:block;height:100%;width:72%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:99px}
-    section{padding:54px 0}.section-title{font-size:clamp(1.8rem,4vw,2.6rem);margin:0 0 10px;letter-spacing:-.03em}.sub{color:var(--muted);margin:0 0 26px}
-    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.feature{background:#111d33;border:1px solid var(--line);border-radius:17px;padding:22px}.feature b{display:block;margin:8px 0}.feature p{color:var(--muted);margin:0;font-size:.95rem}
-    .calcgrid{display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;align-items:start}
-    .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px}
-    label{display:block;font-weight:700;font-size:.9rem;margin:14px 0 7px}
-    input{width:100%;padding:13px 14px;border:1px solid #3a4d6e;border-radius:10px;background:#091426;color:white;font:inherit}
-    input:focus{outline:2px solid var(--blue);border-color:transparent}
-    .results{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .result{background:var(--panel2);border-radius:13px;padding:17px}.result small{display:block;color:var(--muted)}.result strong{font-size:1.45rem}
-    .note{font-size:.83rem;color:var(--muted);margin-top:16px}
-    .pricebox{text-align:center;background:linear-gradient(145deg,#172c50,#101a2e);border:1px solid #34517c;border-radius:20px;padding:26px}
-    .pricebox .price{font-size:2.5rem;font-weight:900}.pricebox p{color:var(--muted);margin:4px 0 18px}
-    footer{border-top:1px solid #ffffff15;padding:28px 0;color:var(--muted);font-size:.88rem}
-    @media(max-width:760px){.hero,.calcgrid{grid-template-columns:1fr}.hero{padding:54px 0 36px}.features{grid-template-columns:1fr}.mock{max-width:520px}.navlink{display:none}}
+    :root {
+      --navy:#071a33; --navy2:#0c2748; --blue:#1677d2; --cyan:#38c5df;
+      --ink:#14243a; --muted:#64748b; --line:#e5edf5; --paper:#f5f8fc;
+      --white:#fff; --shadow:0 18px 50px rgba(8,30,58,.10);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:#fff;line-height:1.6}
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1140px,calc(100% - 40px));margin:auto}
+    .topbar{position:sticky;top:0;z-index:20;background:rgba(7,26,51,.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.1)}
+    .nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:flex;align-items:center;gap:11px;color:#fff;font-size:1.35rem;font-weight:850;letter-spacing:.11em}
+    .brand-mark{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--cyan),#1684dc);display:grid;place-items:center;color:#071a33;font-weight:950;letter-spacing:0}
+    .navlinks{display:flex;align-items:center;gap:25px;color:#dce8f5;font-size:.92rem}
+    .navlinks a:hover{color:var(--cyan)}
+    .nav-actions{display:flex;gap:10px;align-items:center}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 19px;border-radius:12px;font-weight:750;font-size:.93rem;border:1px solid transparent;transition:.2s;cursor:pointer}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:linear-gradient(135deg,#27b8d8,#1680d8);color:#061a32;box-shadow:0 9px 24px rgba(32,170,211,.2)}
+    .btn-outline{border-color:rgba(255,255,255,.28);color:#fff}
+    .btn-light{background:#fff;color:var(--navy);border-color:var(--line)}
+    .btn-dark{background:var(--navy);color:#fff}
+    .hero{background:radial-gradient(circle at 80% 20%,rgba(48,190,220,.18),transparent 30%),linear-gradient(135deg,#071a33 0%,#0b2a4d 70%,#0d3658 100%);color:#fff;padding:92px 0 86px;overflow:hidden}
+    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:55px}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;color:#7de5f3;text-transform:uppercase;letter-spacing:.13em;font-weight:800;font-size:.75rem}
+    .eyebrow:before{content:"";width:24px;height:2px;background:var(--cyan)}
+    h1{font-size:clamp(2.5rem,5vw,4.45rem);line-height:1.06;letter-spacing:-.045em;margin:18px 0 22px;max-width:680px}
+    .hero p{font-size:1.1rem;color:#d1dfed;max-width:590px;margin:0 0 30px}
+    .hero-buttons{display:flex;gap:12px;flex-wrap:wrap}
+    .hero-note{margin-top:22px;color:#9fb4c9;font-size:.85rem}
+    .preview{background:rgba(255,255,255,.97);border:1px solid rgba(255,255,255,.3);border-radius:25px;padding:25px;color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.28);transform:rotate(1deg)}
+    .preview-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+    .preview-label{font-size:.8rem;color:var(--muted);font-weight:700}
+    .pill{background:#e8f8fb;color:#087e9c;padding:6px 10px;border-radius:99px;font-size:.72rem;font-weight:800}
+    .preview-price{font-size:2.5rem;font-weight:900;letter-spacing:-.05em;color:var(--navy);margin:4px 0}
+    .preview-sub{font-size:.82rem;color:var(--muted)}
+    .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+    .metric{background:#f3f7fb;border:1px solid #e8eef5;padding:13px;border-radius:14px}
+    .metric small{display:block;color:var(--muted);font-size:.73rem}
+    .metric strong{font-size:1.05rem;color:var(--navy)}
+    section{padding:82px 0}
+    .section-head{text-align:center;max-width:720px;margin:0 auto 42px}
+    .section-kicker{font-size:.75rem;text-transform:uppercase;letter-spacing:.14em;font-weight:850;color:#1688b4}
+    h2{font-size:clamp(2rem,3.5vw,2.8rem);line-height:1.15;letter-spacing:-.035em;color:var(--navy);margin:10px 0 14px}
+    .section-head p{color:var(--muted);margin:0;font-size:1.02rem}
+    .products{background:var(--paper)}
+    .product-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+    .product-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:27px;box-shadow:0 8px 28px rgba(10,38,70,.045);display:flex;flex-direction:column}
+    .product-card.featured{border:1.5px solid #8bd9e7;box-shadow:0 16px 40px rgba(19,133,177,.10)}
+    .product-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .product-type{font-size:.74rem;font-weight:850;letter-spacing:.1em;text-transform:uppercase;color:#1684aa}
+    .product-card h3{font-size:1.4rem;color:var(--navy);margin:13px 0 8px}
+    .product-card p{color:var(--muted);margin:0 0 18px}
+    .price{font-size:2.2rem;font-weight:900;color:var(--navy);letter-spacing:-.05em}
+    .price small{font-size:.8rem;font-weight:600;letter-spacing:0;color:var(--muted)}
+    .feature-list{list-style:none;padding:0;margin:17px 0 24px;display:grid;gap:10px;color:#34465c;font-size:.92rem}
+    .feature-list li:before{content:"✓";color:#0797ad;font-weight:900;margin-right:9px}
+    .product-card .btn{margin-top:auto;align-self:flex-start}
+    .bundle{background:linear-gradient(135deg,#071a33,#0e355b);color:#fff}
+    .bundle h2{color:#fff}
+    .bundle .section-head p{color:#c1d2e3}
+    .bundle-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+    .bundle-card{padding:27px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.07);border-radius:var(--radius)}
+    .bundle-card h3{font-size:1.35rem;margin:10px 0;color:#fff}
+    .bundle-card p{color:#c1d2e3}
+    .bundle-card .price{color:#fff}
+    .bundle-card .feature-list{color:#dce8f5}
+    .bundle-card .btn{margin-top:8px}
+    .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .step{padding:24px;border:1px solid var(--line);border-radius:18px;background:#fff}
+    .step-number{width:38px;height:38px;border-radius:12px;background:#e8f8fb;color:#087e9c;display:grid;place-items:center;font-weight:900}
+    .step h3{color:var(--navy);margin:16px 0 7px}
+    .step p{color:var(--muted);margin:0;font-size:.94rem}
+    .features{background:var(--paper)}
+    .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .feature-box{padding:23px;background:#fff;border:1px solid var(--line);border-radius:18px}
+    .feature-icon{font-size:1.35rem}
+    .feature-box h3{font-size:1.05rem;color:var(--navy);margin:12px 0 6px}
+    .feature-box p{font-size:.9rem;color:var(--muted);margin:0}
+    .notice{background:#eaf7fb;border:1px solid #cdebf2;border-radius:16px;padding:19px 22px;color:#31536a;font-size:.9rem;margin-top:28px}
+    .cta{background:linear-gradient(135deg,#eaf8fb,#f4f8fc);text-align:center}
+    .cta p{color:var(--muted);max-width:650px;margin:0 auto 24px}
+    footer{background:#06162b;color:#aebfd1;padding:35px 0}
+    .footer-row{display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
+    footer .brand{font-size:1.1rem}
+    footer p{margin:8px 0 0;font-size:.82rem}
+    .footer-links{display:flex;gap:18px;flex-wrap:wrap;font-size:.85rem}
+    .footer-links a:hover{color:var(--cyan)}
+    @media(max-width:850px){
+      .navlinks{display:none}.hero-grid{grid-template-columns:1fr;gap:35px}.preview{max-width:520px;transform:none}
+      .product-grid,.bundle-grid{grid-template-columns:1fr}.how-grid,.feature-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:560px){
+      .container{width:min(100% - 30px,1140px)}.nav{min-height:68px}.brand{font-size:1.12rem}
+      .nav-actions .btn{padding:9px 11px;font-size:.8rem}.nav-actions .btn-outline{display:none}
+      .hero{padding:70px 0 65px}section{padding:64px 0}.hero p{font-size:1rem}
+      .how-grid,.feature-grid{grid-template-columns:1fr}.product-card,.bundle-card{padding:22px}
+      .preview{padding:20px}.preview-price{font-size:2.1rem}
+    }
   </style>
 </head>
 <body>
-<header><div class="wrap"><nav><a class="brand" href="#">MAV<span>O</span>RA</a><a class="navlink" href="#calculadora">Preço Inteligente</a></nav></div></header>
-<main>
-  <div class="wrap hero">
-    <div>
-      <div class="eyebrow">Clareza para decidir melhor</div>
-      <h1>Seu preço com mais <em>inteligência.</em></h1>
-      <p class="lead">Uma ferramenta simples para visualizar custos, preço de venda e lucro estimado — e tomar decisões melhores para o seu negócio.</p>
-      <div class="actions"><a class="btn primary" href="#calculadora">Experimentar calculadora</a><a class="btn secondary" href="#como-funciona">Conhecer a MAVORA</a></div>
-    </div>
-    <div class="mock">
-      <div class="mocktop"><b>PAINEL DE DEMONSTRAÇÃO</b><span class="pill">EXEMPLO</span></div>
-      <h2>Preço sugerido</h2><div class="bigprice">R$ 33,90</div>
-      <div class="bars"><div><small>Custos considerados</small><div class="bar"><i style="width:48%"></i></div></div><div><small>Margem estimada</small><div class="bar"><i style="width:72%"></i></div></div></div>
-      <p class="note">Valores ilustrativos. Use a calculadora abaixo para simular seus próprios números.</p>
-    </div>
-  </div>
-  <section id="como-funciona"><div class="wrap"><h2 class="section-title">Precificar não precisa ser complicado.</h2><p class="sub">A MAVORA quer transformar números em decisões mais claras.</p>
-    <div class="features">
-      <article class="feature"><div>📊</div><b>Entenda seus custos</b><p>Organize o custo do produto e as despesas consideradas na sua simulação.</p></article>
-      <article class="feature"><div>🎯</div><b>Simule seu preço</b><p>Experimente diferentes preços e veja o resultado estimado na hora.</p></article>
-      <article class="feature"><div>💡</div><b>Decida com clareza</b><p>Compare receita, custos e lucro estimado antes de definir seu preço.</p></article>
-    </div>
-  </div></section>
-  <section id="calculadora"><div class="wrap"><h2 class="section-title">Experimente o Preço Inteligente</h2><p class="sub">Esta é uma demonstração gratuita, sem salvar dados.</p>
-    <div class="calcgrid">
-      <div class="card">
-        <h3 style="margin-top:0">Informe seus valores</h3>
-        <label for="cost">Custo por unidade (R$)</label><input id="cost" type="number" min="0" step=".01" value="15.00">
-        <label for="expenses">Despesas adicionais por unidade (R$)</label><input id="expenses" type="number" min="0" step=".01" value="3.00">
-        <label for="margin">Margem desejada sobre o preço (%)</label><input id="margin" type="number" min="0" max="99" step="1" value="30">
-        <label for="sale">Preço de venda para testar (R$)</label><input id="sale" type="number" min="0" step=".01" value="33.90">
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="#inicio" aria-label="MAVORA início"><span class="brand-mark">M</span>MAVORA</a>
+      <nav class="navlinks" aria-label="Navegação principal">
+        <a href="#solucoes">Soluções</a><a href="#pacotes">Pacotes</a><a href="#como-funciona">Como funciona</a><a href="#central">Central do Empreendedor</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn-outline" href="login.html">Entrar</a>
+        <a class="btn btn-primary" href="cadastro.html">Criar conta</a>
       </div>
-      <div class="card">
-        <h3 style="margin-top:0">Resultado estimado</h3>
-        <div class="results">
-          <div class="result"><small>Custo total</small><strong id="total">R$ 18,00</strong></div>
-          <div class="result"><small>Preço sugerido</small><strong id="suggested">R$ 25,71</strong></div>
-          <div class="result"><small>Lucro no preço testado</small><strong id="profit">R$ 15,90</strong></div>
-          <div class="result"><small>Margem no preço testado</small><strong id="actual">46,9%</strong></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Gestão de preços mais clara</span>
+          <h1>Precifique com confiança. Decida com clareza.</h1>
+          <p>A MAVORA oferece calculadoras de preços e materiais informativos para ajudar empreendedores a entender seus custos, formar preços de venda e acompanhar os resultados de cada decisão.</p>
+          <div class="hero-buttons">
+            <a class="btn btn-primary" href="#solucoes">Conhecer as calculadoras <span>→</span></a>
+            <a class="btn btn-outline" href="cadastro.html">Criar minha conta</a>
+          </div>
+          <div class="hero-note">Pagamento único nos produtos • Sem mensalidade • Acesso conforme o produto adquirido</div>
         </div>
-        <p class="note" id="warning">Simulação simplificada: não considera impostos, taxas de pagamento, perdas ou custos fixos. Faça uma análise completa antes de definir seu preço.</p>
+        <div class="preview" aria-label="Exemplo explicado de como usar a Calculadora de Preços Clássica">
+          <div class="preview-head"><div><div class="preview-label">EXEMPLO DE USO</div><strong style="color:#0b2745">Precificando uma camiseta</strong></div><span class="pill">PASSO A PASSO</span></div>
+          <div class="preview-label">1. Informe os custos</div>
+          <div class="metric-grid" style="margin-top:10px">
+            <div class="metric"><small>Compra da camiseta</small><strong>R$ 25,00</strong></div>
+            <div class="metric"><small>Embalagem</small><strong>R$ 2,00</strong></div>
+          </div>
+          <div class="preview-sub" style="margin-top:13px">Custo total: R$ 25,00 + R$ 2,00 = <strong style="color:#0b2745">R$ 27,00</strong></div>
+          <div class="preview-label" style="margin-top:19px">2. Defina a margem desejada</div>
+          <div class="preview-price" style="font-size:2rem">25%</div>
+          <div class="preview-sub">A calculadora divide R$ 27,00 por (1 − 0,25).</div>
+          <div style="height:1px;background:#e8eef5;margin:17px 0"></div>
+          <div class="preview-label">3. Veja o preço sugerido</div>
+          <div class="preview-price">R$ 36,00</div>
+          <div class="preview-sub">Vendendo por R$ 36,00, sobram R$ 9,00 após os R$ 27,00 de custos — margem de 25% sobre o preço de venda.</div>
+        </div>
       </div>
+    </section>
+
+    <section class="products" id="solucoes">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-kicker">Soluções MAVORA</span>
+          <h2>Escolha a calculadora ideal para sua operação</h2>
+          <p>Ferramentas para transformar custos e despesas em informações úteis na hora de definir o preço de venda.</p>
+        </div>
+        <div class="product-grid">
+          <article class="product-card">
+            <div class="product-top"><span class="product-type">Ferramenta individual</span><span class="pill">Clássica</span></div>
+            <h3>Calculadora de Preços Clássica</h3>
+            <p>Uma forma prática de calcular o custo total, testar um preço de venda e estimar o lucro e a margem da operação.</p>
+            <div class="price">R$ 33,90 <small>pagamento único</small></div>
+            <ul class="feature-list">
+              <li>Cadastro do custo por unidade</li>
+              <li>Inclusão de despesas adicionais</li>
+              <li>Definição da margem desejada</li>
+              <li>Preço sugerido e preço testado</li>
+              <li>Estimativa de lucro e margem</li>
+            </ul>
+            <a class="btn btn-dark" href="produto-classica.html">Conhecer a Clássica →</a>
+          </article>
+          <article class="product-card featured">
+            <div class="product-top"><span class="product-type">Ferramenta avançada</span><span class="pill">Mais completa</span></div>
+            <h3>Calculadora de Preços Premium</h3>
+            <p>Uma solução mais completa para operações que precisam considerar diferentes componentes na formação do preço.</p>
+            <div class="price">R$ 47,90 <small>pagamento único</small></div>
+            <ul class="feature-list">
+              <li>Recursos da precificação avançada</li>
+              <li>Taxas e despesas operacionais</li>
+              <li>Fretes e comissões</li>
+              <li>Componentes tributários aplicáveis</li>
+              <li>Visão mais detalhada da composição do preço</li>
+            </ul>
+            <a class="btn btn-dark" href="produto-premium.html">Conhecer a Premium →</a>
+          </article>
+        </div>
+        <div class="notice"><strong>Importante:</strong> os cálculos tributários dependem do regime, produto, localidade e tipo de operação. A ferramenta deverá considerar apenas regras aplicáveis e não substitui a validação de um contador.</div>
+      </div>
+    </section>
+
+    <section class="bundle" id="pacotes">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-kicker">Combinações para empreender</span>
+          <h2>Calculadoras e conteúdos em um só pacote</h2>
+          <p>Escolha uma combinação que reúna ferramentas de precificação e materiais informativos da Central do Empreendedor.</p>
+        </div>
+        <div class="bundle-grid">
+          <article class="bundle-card">
+            <span class="product-type">Pacote de entrada</span>
+            <h3>Pacote Clássico</h3>
+            <p>Para quem quer começar com a calculadora clássica e materiais essenciais para entender melhor a precificação.</p>
+            <div class="price">R$ 52,90 <small style="color:#c1d2e3">pagamento único</small></div>
+            <ul class="feature-list"><li>Calculadora de Preços Clássica</li><li>5 materiais PDF informativos</li><li>Acesso aos conteúdos incluídos no pacote</li></ul>
+            <a class="btn btn-primary" href="pacote-classico.html">Ver Pacote Clássico →</a>
+          </article>
+          <article class="bundle-card">
+            <span class="product-type">Pacote completo</span>
+            <h3>Pacote Premium MAVORA</h3>
+            <p>Uma combinação para quem deseja ter as duas calculadoras e acesso à biblioteca completa de materiais.</p>
+            <div class="price">R$ 65,90 <small style="color:#c1d2e3">pagamento único</small></div>
+            <ul class="feature-list"><li>Calculadora de Preços Clássica</li><li>Calculadora de Preços Premium</li><li>Biblioteca completa de PDFs informativos</li></ul>
+            <a class="btn btn-primary" href="pacote-premium.html">Ver Pacote Premium →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="como-funciona">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-kicker">Sua jornada</span>
+          <h2>Comece de forma simples</h2>
+          <p>Uma experiência organizada para você conhecer a plataforma, escolher o produto e acompanhar seus materiais.</p>
+        </div>
+        <div class="how-grid">
+          <article class="step"><div class="step-number">01</div><h3>Crie sua conta</h3><p>Faça seu cadastro para acessar a área do cliente e iniciar a experiência de demonstração.</p></article>
+          <article class="step"><div class="step-number">02</div><h3>Experimente a Clássica</h3><p>Após o cadastro, haverá uma simulação gratuita, limitada a uma utilização por conta.</p></article>
+          <article class="step"><div class="step-number">03</div><h3>Escolha seu acesso</h3><p>Compare as opções, adquira o produto desejado e acompanhe seus acessos pelo painel.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="features" id="central">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-kicker">Além da calculadora</span>
+          <h2>Uma área para consultar e organizar suas informações</h2>
+          <p>A MAVORA reúne recursos para apoiar decisões do dia a dia do negócio, sem transformar informação em curso obrigatório.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-box"><div class="feature-icon">📚</div><h3>Central do Empreendedor</h3><p>Materiais PDF sobre custos, precificação, vendas, negociação, marketing e promoções com margem.</p></article>
+          <article class="feature-box"><div class="feature-icon">📄</div><h3>Meus relatórios</h3><p>Salve seus cálculos e consulte relatórios com os dados registrados naquele momento.</p></article>
+          <article class="feature-box"><div class="feature-icon">🔎</div><h3>Verificação MAVORA</h3><p>Relatórios poderão conter ID e código de verificação para confirmar sua emissão pela plataforma.</p></article>
+          <article class="feature-box"><div class="feature-icon">📤</div><h3>Compartilhamento</h3><p>Baixe e compartilhe um relatório específico com contador, sócio ou outro empresário.</p></article>
+          <article class="feature-box"><div class="feature-icon">💬</div><h3>Feedback do cliente</h3><p>Clientes poderão avaliar produtos adquiridos e enviar comentários e sugestões.</p></article>
+          <article class="feature-box"><div class="feature-icon">👤</div><h3>Meu painel</h3><p>Acompanhe seus produtos, calculadoras, relatórios, conteúdos e informações da conta.</p></article>
+        </div>
+        <div class="notice">Os relatórios e códigos de verificação comprovam a emissão pela MAVORA; não representam auditoria dos dados informados pelo usuário nem substituem documentos contábeis ou fiscais oficiais.</div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <span class="section-kicker">MAVORA</span>
+        <h2>Mais clareza na formação do preço começa com informação.</h2>
+        <p>Crie sua conta para conhecer a experiência da MAVORA e encontrar a solução mais adequada para o seu negócio.</p>
+        <a class="btn btn-dark" href="cadastro.html">Criar minha conta →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <div><a class="brand" href="#inicio"><span class="brand-mark">M</span>MAVORA</a><p>Precificação e informação para empreendedores.</p></div>
+      <div class="footer-links"><a href="#solucoes">Soluções</a><a href="#pacotes">Pacotes</a><a href="login.html">Entrar</a><a href="cadastro.html">Criar conta</a></div>
+      <p>© <span id="year"></span> MAVORA. Todos os direitos reservados.</p>
     </div>
-  </div></section>
-  <section><div class="wrap"><div class="pricebox"><div class="eyebrow">MAVORA • Preço Inteligente</div><h2 style="margin:8px 0">Uma ferramenta para o seu próximo passo.</h2><div class="price">R$ 33,90</div><p>Preço planejado para o acesso completo — ainda não disponível para compra.</p><span class="pill">LANÇAMENTO EM PREPARAÇÃO</span><p class="note">A condição especial de R$ 30,00 está em planejamento. Nenhum pagamento é solicitado nesta demonstração.</p></div></div></section>
-</main>
-<footer><div class="wrap">© <span id="year"></span> MAVORA. Plataforma em desenvolvimento. • Demonstração ilustrativa.</div></footer>
-<script>
-  const money = n => n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-  const ids=['cost','expenses','margin','sale'];
-  function update(){
-    const v=Object.fromEntries(ids.map(id=>[id,Math.max(0,Number(document.getElementById(id).value)||0)]));
-    const total=v.cost+v.expenses, m=Math.min(v.margin,99), suggested=m<100?total/(1-m/100):0;
-    const profit=v.sale-total, actual=v.sale>0?(profit/v.sale)*100:0;
-    document.getElementById('total').textContent=money(total);
-    document.getElementById('suggested').textContent=money(suggested);
-    document.getElementById('profit').textContent=money(profit);
-    document.getElementById('actual').textContent=v.sale>0?actual.toFixed(1).replace('.',',')+'%':'—';
-    document.getElementById('warning').textContent=profit<0?'Atenção: o preço testado está abaixo do custo total informado. '+ 'Simulação simplificada: não considera impostos, taxas ou custos fixos.':'Simulação simplificada: não considera impostos, taxas de pagamento, perdas ou custos fixos. Faça uma análise completa antes de definir seu preço.';
-  }
-  ids.forEach(id=>document.getElementById(id).addEventListener('input',update));
-  document.getElementById('year').textContent=new Date().getFullYear(); update();
-</script>
-</body></html>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
