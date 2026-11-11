@@ -18,7 +18,7 @@
   --line:#e3eaf2;--green:#23865b;--shadow:0 18px 55px rgba(9,27,50,.09);
   --radius:22px;
 }
-*{box-sizing:border-box}
+*{box-sizing:border-box} img{max-width:100%;height:auto;display:block}
 html{scroll-behavior:smooth;scroll-padding-top:90px}
 body{margin:0;font-family:"DM Sans",sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased}
 body.locked{overflow:hidden}
@@ -161,6 +161,29 @@ button{cursor:pointer}
   .footer-inner{flex-direction:column;align-items:flex-start}
 }
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+/* TELAS INTERNAS MAVORA */
+.internal-view{display:none;min-height:calc(100vh - 78px);padding:58px 0 76px;background:var(--paper)}
+.internal-view.active{display:block}
+.internal-wrap{width:min(1000px,calc(100% - 40px));margin:auto}
+.internal-top{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.back-home{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:10px;padding:11px 15px;font-weight:700;font-size:12px}
+.internal-kicker{color:#218bb9;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
+.internal-view h1{font:800 clamp(27px,4vw,38px) Manrope,sans-serif;color:var(--navy);margin:12px 0}
+.internal-lead{color:var(--muted);line-height:1.8;max-width:680px;font-size:14px}
+.internal-panel{margin-top:26px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:25px;box-shadow:0 7px 30px rgba(9,27,50,.035)}
+.internal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:20px}
+.internal-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:20px}
+.internal-card h3{font:700 16px Manrope,sans-serif;color:var(--navy);margin:0 0 8px}
+.internal-card p{font-size:13px;line-height:1.7;color:var(--muted);margin:0 0 15px}
+.internal-action{border:0;border-radius:10px;background:#eaf6fb;color:#126e9e;padding:11px 14px;font-weight:800;font-size:12px}
+.internal-field{display:block;margin:14px 0}
+.internal-field span{display:block;font-size:12px;font-weight:800;color:#31435a;margin-bottom:7px}
+.internal-field input,.internal-field textarea,.internal-field select{width:100%;border:1px solid #dce5ee;border-radius:10px;padding:12px;background:#fbfdff;color:var(--ink);font:14px "DM Sans",sans-serif}
+.internal-field textarea{min-height:110px;resize:vertical}
+.internal-empty{padding:22px;border:1px dashed #cbd8e5;border-radius:13px;color:var(--muted);font-size:13px;line-height:1.7;background:#fbfdff}
+@media(max-width:760px){.internal-view{min-height:calc(100vh - 68px);padding:38px 0 55px}.internal-wrap{width:calc(100% - 34px)}.internal-grid{grid-template-columns:1fr}.internal-panel{padding:19px}}
+
 </style>
 </head>
 
@@ -256,6 +279,16 @@ button{cursor:pointer}
 </section>
 </main>
 
+<section class="internal-view" id="internalView" aria-live="polite">
+  <div class="internal-wrap">
+    <div class="internal-top">
+      <button class="back-home" id="backHome" type="button">← Voltar ao início</button>
+      <span class="internal-kicker">Área do cliente MAVORA</span>
+    </div>
+    <div id="internalContent"></div>
+  </div>
+</section>
+
 <footer class="footer">
   <div class="container footer-inner">
     <div><a class="brand" href="#inicio">MAV<span>O</span>RA</a><div style="font-size:11px;margin-top:7px">Preço inteligente. Decisões com clareza.</div></div>
@@ -294,6 +327,7 @@ button{cursor:pointer}
     <form id="accountForm">
       <div class="form-field"><label for="accountEmail">E-mail</label><input id="accountEmail" type="email" autocomplete="email" placeholder="voce@exemplo.com" required></div>
       <div class="form-field"><label for="accountPassword">Senha</label><input id="accountPassword" type="password" autocomplete="current-password" placeholder="Digite sua senha" minlength="6" required></div>
+      <div class="form-field" id="confirmPasswordField" style="display:none"><label for="accountPasswordConfirm">Confirmar senha</label><input id="accountPasswordConfirm" type="password" autocomplete="new-password" placeholder="Digite a senha novamente" minlength="6"></div>
       <button class="form-submit" id="submitAccount" type="submit">Entrar na MAVORA</button>
     </form>
     <button class="forgot" id="forgotPassword" type="button">Esqueci minha senha</button>
@@ -341,7 +375,7 @@ function closeDrawer(){
   document.body.classList.remove('locked');
 }
 function openModal(mode='login'){
-  closeDrawer();setAccountMode(mode);$('accountModal').classList.add('open');
+  closeDrawer();$('accountEmail').disabled=false;setAccountMode(mode);$('accountModal').classList.add('open');
   document.body.classList.add('locked');setTimeout(()=>$('accountEmail').focus(),100);
 }
 function closeModal(){
@@ -349,14 +383,19 @@ function closeModal(){
   $('accountMessage').className='form-message';
 }
 function setAccountMode(mode){
-  accountMode=mode;const isLogin=mode==='login';
-  $('modalTitle').textContent=isLogin?'Bem-vindo de volta':'Crie sua conta MAVORA';
-  $('modalDescription').textContent=isLogin?'Entre com seu e-mail e senha para continuar.':'Cadastre-se para ter seu espaço pessoal na MAVORA.';
-  $('submitAccount').textContent=isLogin?'Entrar na MAVORA':'Criar minha conta';
-  $('switchText').textContent=isLogin?'Ainda não tem conta?':'Já tem uma conta?';
+  accountMode=mode;const isLogin=mode==='login';const isUpdate=mode==='update';const isSignup=mode==='signup';
+  $('modalTitle').textContent=isUpdate?'Defina uma nova senha':(isLogin?'Bem-vindo de volta':'Crie sua conta MAVORA');
+  $('modalDescription').textContent=isUpdate?'Escolha uma senha nova para acessar sua conta.':(isLogin?'Entre com seu e-mail e senha para continuar.':'Preencha seus dados para criar seu acesso à MAVORA.');
+  $('submitAccount').textContent=isUpdate?'Salvar nova senha':(isLogin?'Entrar na MAVORA':'Criar minha conta');
+  $('switchText').textContent=isUpdate?'':(isLogin?'Ainda não tem conta?':'Já tem uma conta?');
+  $('switchMode').style.display=isUpdate?'none':'inline';
   $('switchMode').textContent=isLogin?'Criar minha conta':'Entrar';
   $('forgotPassword').style.display=isLogin?'block':'none';
+  $('confirmPasswordField').style.display=(isSignup||isUpdate)?'block':'none';
   $('accountPassword').autocomplete=isLogin?'current-password':'new-password';
+  $('accountPasswordConfirm').required=isSignup||isUpdate;
+  $('accountPasswordConfirm').value='';
+  $('accountEmail').disabled=isUpdate;
   $('accountMessage').className='form-message';
 }
 function showAccountMessage(message,type){
@@ -390,57 +429,76 @@ $('switchMode').addEventListener('click',()=>setAccountMode(accountMode==='login
 document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeDrawer();closeModal()}});
 
 /* LOGIN E CADASTRO */
+function friendlyAuthError(error){
+  const message=(error?.message||'').toLowerCase();
+  if(message.includes('invalid login credentials')) return 'E-mail ou senha incorretos. Confira os dados ou use “Esqueci minha senha”.';
+  if(message.includes('email not confirmed')) return 'Seu e-mail ainda não foi confirmado. Abra a mensagem enviada pela MAVORA e clique no link de confirmação.';
+  if(message.includes('user already registered')) return 'Este e-mail já possui cadastro. Volte para “Entrar” ou recupere sua senha.';
+  if(message.includes('password should be at least') || message.includes('weak password')) return 'A senha precisa ter pelo menos 6 caracteres.';
+  if(message.includes('signup is disabled')) return 'O cadastro está desativado nas configurações de autenticação. Precisamos habilitá-lo no Supabase.';
+  if(message.includes('rate limit') || message.includes('too many requests')) return 'Muitas tentativas em pouco tempo. Aguarde alguns minutos e tente novamente.';
+  if(message.includes('failed to fetch') || message.includes('network')) return 'Não foi possível conectar ao serviço. Verifique sua internet e tente novamente.';
+  return error?.message || 'Não foi possível concluir. Confira os dados e tente novamente.';
+}
+
 $('accountForm').addEventListener('submit',async event=>{
   event.preventDefault();
-  const email=$('accountEmail').value.trim();
+  const email=$('accountEmail').value.trim().toLowerCase();
   const password=$('accountPassword').value;
   const button=$('submitAccount');
+  if((accountMode==='signup'||accountMode==='update') && password!==$('accountPasswordConfirm').value){
+    showAccountMessage('As senhas não são iguais. Confira e digite novamente.','error');
+    $('accountPasswordConfirm').focus();return;
+  }
   button.disabled=true;button.textContent='Aguarde...';
   $('accountMessage').className='form-message';
   try{
-    if(accountMode==='login'){
+    if(accountMode==='update'){
+      const {error}=await supabaseClient.auth.updateUser({password});
+      if(error)throw error;
+      showAccountMessage('Senha atualizada com sucesso! Agora você já pode entrar na MAVORA.','success');
+      $('accountEmail').disabled=false;
+      setTimeout(()=>{setAccountMode('login');$('accountPassword').value='';$('accountPasswordConfirm').value='';showAccountMessage('Sua senha foi alterada. Entre com a nova senha.','success')},1100);
+    }else if(accountMode==='login'){
       const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
       if(error)throw error;
       updateAccountUI(data.user);
       showAccountMessage('Acesso realizado. Sua conta está conectada à MAVORA.','success');
       setTimeout(()=>{closeModal();openDrawer();toast('Bem-vindo de volta à MAVORA!')},700);
     }else{
+      const redirectUrl=window.location.origin+window.location.pathname;
       const {data,error}=await supabaseClient.auth.signUp({
         email,password,
-        options:{emailRedirectTo:window.location.origin+window.location.pathname}
+        options:{emailRedirectTo:redirectUrl}
       });
       if(error)throw error;
       if(data.session){
         updateAccountUI(data.user);
         showAccountMessage('Conta criada e acesso realizado com sucesso.','success');
+        setTimeout(()=>{closeModal();openDrawer();toast('Sua conta MAVORA está pronta!')},900);
       }else{
-        showAccountMessage('Cadastro iniciado! Confira seu e-mail e confirme o endereço para ativar sua conta.','success');
+        showAccountMessage('Cadastro recebido! Enviamos um link de confirmação para '+email+'. Abra seu e-mail (confira também Spam e Promoções) e clique no link para ativar a conta. Depois, volte aqui e entre com seu e-mail e senha.','success');
       }
     }
   }catch(error){
-    showAccountMessage(error.message||'Não foi possível concluir. Confira os dados e tente novamente.','error');
+    showAccountMessage(friendlyAuthError(error),'error');
   }finally{
     button.disabled=false;
-    button.textContent=accountMode==='login'?'Entrar na MAVORA':'Criar minha conta';
+    button.textContent=accountMode==='update'?'Salvar nova senha':(accountMode==='login'?'Entrar na MAVORA':'Criar minha conta');
   }
 });
 
 /* RECUPERAÇÃO DE SENHA */
 $('forgotPassword').addEventListener('click',async()=>{
-  const email=$('accountEmail').value.trim();
-  if(!email){
-    showAccountMessage('Digite seu e-mail primeiro para receber o link de recuperação.','error');
-    $('accountEmail').focus();return;
-  }
+  const email=$('accountEmail').value.trim().toLowerCase();
+  if(!email){showAccountMessage('Digite seu e-mail primeiro para receber o link de recuperação.','error');$('accountEmail').focus();return;}
+  const button=$('forgotPassword');button.disabled=true;button.textContent='Enviando...';
   try{
-    const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{
-      redirectTo:window.location.origin+window.location.pathname
-    });
+    const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+window.location.pathname});
     if(error)throw error;
-    showAccountMessage('Se o e-mail estiver cadastrado, você receberá as instruções de recuperação.','success');
-  }catch(error){
-    showAccountMessage(error.message||'Não foi possível solicitar a recuperação.','error');
-  }
+    showAccountMessage('Se o e-mail estiver cadastrado, enviaremos um link. Abra a mensagem e use o link para escolher uma nova senha. Confira também Spam e Promoções.','success');
+  }catch(error){showAccountMessage(friendlyAuthError(error),'error');}
+  finally{button.disabled=false;button.textContent='Esqueci minha senha';}
 });
 
 /* RESTAURAÇÃO AUTOMÁTICA DA SESSÃO */
@@ -455,6 +513,10 @@ async function restoreSession(){
 }
 supabaseClient.auth.onAuthStateChange((event,session)=>{
   updateAccountUI(session?.user||null);
+  if(event==='PASSWORD_RECOVERY'){
+    openModal('update');
+    showAccountMessage('Link validado! Escolha sua nova senha abaixo.','success');
+  }
 });
 
 /* SAIR DA CONTA */
@@ -464,33 +526,65 @@ $('logoutButton').addEventListener('click',async()=>{
   updateAccountUI(null);closeDrawer();toast('Você saiu da sua conta.');
 });
 
-/* ÁREAS A SEREM IMPLEMENTADAS NAS PRÓXIMAS ETAPAS */
-const areaNames={
-  produtos:'Meus produtos e biblioteca de materiais',
-  calculadoras:'Minhas calculadoras',
-  relatorios:'Meus relatórios',
-  ajuda:'Central de ajuda',
-  feedback:'Feedback',
-  configuracoes:'Configurações da conta'
+/* NAVEGAÇÃO INTERNA: TROCA DE TELA SEM SAIR DO SITE */
+const homeSections=[...document.querySelectorAll('main, footer')];
+const internalView=$('internalView');
+const internalContent=$('internalContent');
+const internalPages={
+  produtos:{title:'Meus produtos',lead:'Aqui você encontrará as ferramentas e os materiais liberados na sua conta.',body:'<div class="internal-empty">Seus produtos aparecerão aqui depois que a compra for confirmada. Você poderá acessar cada ferramenta diretamente por esta área.</div>'},
+  calculadoras:{title:'Minhas calculadoras',lead:'Acesse suas ferramentas de precificação em um só lugar.',body:'<div class="internal-empty">Quando uma calculadora estiver liberada para sua conta, ela aparecerá aqui com um botão para abrir e continuar seus cálculos.</div>'},
+  relatorios:{title:'Meus relatórios',lead:'Consulte os resultados que você salvar durante o uso das ferramentas MAVORA.',body:'<div class="internal-empty">Seus relatórios salvos aparecerão aqui. Estamos preparando a geração de PDF e o compartilhamento com contadores e parceiros.</div>'},
+  ajuda:{title:'Central de ajuda',lead:'Precisa de orientação? A MAVORA deve ser simples de usar, mesmo se esta for sua primeira experiência.',body:'<div class="internal-grid"><article class="internal-card"><h3>Como começar</h3><p>Entre na sua conta, abra Meus produtos e escolha uma ferramenta que esteja liberada.</p></article><article class="internal-card"><h3>Problemas com acesso</h3><p>Confira se usou o mesmo e-mail do cadastro e se confirmou seu endereço de e-mail.</p></article><article class="internal-card"><h3>Compras e acesso</h3><p>O acesso aos produtos depende da confirmação da compra.</p></article><article class="internal-card"><h3>Precisa de mais ajuda?</h3><p>Entre em contato pelo canal de atendimento informado pela equipe MAVORA.</p></article></div>'},
+  feedback:{title:'Enviar feedback',lead:'Sua opinião ajuda a melhorar a MAVORA. Conte o que ficou fácil ou o que podemos melhorar.',body:'<form id="feedbackForm" class="internal-panel"><label class="internal-field"><span>Sobre o que é seu feedback?</span><select id="feedbackTopic" required><option value="">Selecione uma opção</option><option>Problema no site</option><option>Dificuldade para usar</option><option>Sugestão de melhoria</option><option>Elogio</option></select></label><label class="internal-field"><span>Conte para nós</span><textarea id="feedbackText" required placeholder="Escreva sua mensagem..."></textarea></label><button class="form-submit" type="submit">Preparar mensagem</button><p class="internal-lead" id="feedbackResult" role="status"></p></form>'},
+  configuracoes:{title:'Configurações da conta',lead:'Confira os dados básicos da sua conta e gerencie seu acesso.',body:'<div class="internal-panel"><h3>Dados de acesso</h3><p class="internal-lead" id="settingsEmail"></p><p class="internal-lead">Para alterar sua senha, saia e use “Esqueci minha senha” na tela de login.</p><button class="internal-action" id="settingsReset" type="button">Enviar link para redefinir senha</button></div>'}
 };
+function showInternalPage(key){
+  const page=internalPages[key];if(!page)return;
+  if(!currentUser){openModal('login');toast('Entre na sua conta para acessar esta área.');return;}
+  closeDrawer();
+  homeSections.forEach(el=>el.style.display='none');
+  internalView.classList.add('active');
+  internalContent.innerHTML=`<div class="internal-kicker">Sua área de trabalho</div><h1>${page.title}</h1><p class="internal-lead">${page.lead}</p>${page.body}`;
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(key==='configuracoes'){
+    $('settingsEmail').textContent='Conta conectada: '+(currentUser.email||'');
+    $('settingsReset').addEventListener('click',async()=>{
+      const {error}=await supabaseClient.auth.resetPasswordForEmail(currentUser.email,{redirectTo:window.location.origin+window.location.pathname});
+      toast(error?friendlyAuthError(error):'Se o endereço estiver correto, enviaremos um link para redefinir sua senha.');
+    });
+  }
+  if(key==='feedback'){
+    $('feedbackForm').addEventListener('submit',event=>{
+      event.preventDefault();
+      $('feedbackResult').textContent='Seu feedback foi preenchido. O envio ficará disponível quando conectarmos o canal de atendimento da MAVORA.';
+    });
+  }
+}
+function returnHome(){
+  internalView.classList.remove('active');
+  homeSections.forEach(el=>el.style.display='');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+$('backHome').addEventListener('click',returnHome);
 document.querySelectorAll('[data-area]').forEach(button=>{
-  button.addEventListener('click',()=>{
-    const area=button.dataset.area;
-    if(!currentUser){openModal('login');toast('Entre na sua conta para acessar sua área pessoal.');return}
-    closeDrawer();toast(areaNames[area]+' será implementado na próxima etapa.');
-  });
+  button.addEventListener('click',()=>showInternalPage(button.dataset.area));
 });
 
-/* APRESENTAÇÃO DOS PRODUTOS */
-const productNames={
-  classica:'Calculadora de Preços Clássica',
-  premium:'Calculadora de Preços Premium',
-  'pacote-classico':'Pacote Clássico',
-  'pacote-premium':'Pacote Premium MAVORA'
+/* DETALHES DOS PRODUTOS EM TELA INTERNA */
+const productDetails={
+  classica:{title:'Calculadora de Preços Clássica',price:'R$ 33,90',desc:'Organize custos, despesas e margem desejada para entender o preço sugerido e o lucro estimado.'},
+  premium:{title:'Calculadora de Preços Premium',price:'R$ 47,90',desc:'Uma ferramenta avançada para considerar taxas, comissões, fretes e despesas operacionais.'},
+  'pacote-classico':{title:'Pacote Clássico',price:'R$ 52,90',desc:'Calculadora Clássica acompanhada de cinco materiais informativos.'},
+  'pacote-premium':{title:'Pacote Premium MAVORA',price:'R$ 65,90',desc:'Uma combinação de recursos avançados e materiais para apoiar suas decisões de precificação.'}
 };
 document.querySelectorAll('[data-product]').forEach(button=>{
   button.addEventListener('click',()=>{
-    toast(productNames[button.dataset.product]+': página de detalhes e compra será implementada na próxima etapa.');
+    const item=productDetails[button.dataset.product];if(!item)return;
+    homeSections.forEach(el=>el.style.display='none');
+    internalView.classList.add('active');
+    internalContent.innerHTML=`<div class="internal-kicker">Soluções MAVORA</div><h1>${item.title}</h1><p class="internal-lead">${item.desc}</p><div class="internal-panel"><h3>${item.price}</h3><p class="internal-lead">Pagamento único. A liberação do acesso será vinculada à confirmação da compra.</p><div class="internal-empty">A etapa de pagamento e liberação automática ainda será conectada. Nenhuma cobrança será realizada por este botão neste momento.</div><p style="margin-top:18px"><button class="back-home" type="button" id="productBack">← Voltar às soluções</button></p></div>`;
+    $('productBack').addEventListener('click',returnHome);
+    window.scrollTo({top:0,behavior:'smooth'});
   });
 });
 
