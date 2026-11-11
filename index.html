@@ -1,281 +1,500 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#071a33">
-  <meta name="description" content="MAVORA — calculadoras de precificação e informação prática para empreendedores.">
-  <title>MAVORA — Precificação inteligente para empreendedores</title>
-  <style>
-    :root {
-      --navy:#071a33; --navy2:#0c2748; --blue:#1677d2; --cyan:#38c5df;
-      --ink:#14243a; --muted:#64748b; --line:#e5edf5; --paper:#f5f8fc;
-      --white:#fff; --shadow:0 18px 50px rgba(8,30,58,.10);
-      --radius:22px;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:#fff;line-height:1.6}
-    a{color:inherit;text-decoration:none}
-    .container{width:min(1140px,calc(100% - 40px));margin:auto}
-    .topbar{position:sticky;top:0;z-index:20;background:rgba(7,26,51,.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.1)}
-    .nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-    .brand{display:flex;align-items:center;gap:11px;color:#fff;font-size:1.35rem;font-weight:850;letter-spacing:.11em}
-    .brand-mark{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--cyan),#1684dc);display:grid;place-items:center;color:#071a33;font-weight:950;letter-spacing:0}
-    .navlinks{display:flex;align-items:center;gap:25px;color:#dce8f5;font-size:.92rem}
-    .navlinks a:hover{color:var(--cyan)}
-    .nav-actions{display:flex;gap:10px;align-items:center}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 19px;border-radius:12px;font-weight:750;font-size:.93rem;border:1px solid transparent;transition:.2s;cursor:pointer}
-    .btn:hover{transform:translateY(-2px)}
-    .btn-primary{background:linear-gradient(135deg,#27b8d8,#1680d8);color:#061a32;box-shadow:0 9px 24px rgba(32,170,211,.2)}
-    .btn-outline{border-color:rgba(255,255,255,.28);color:#fff}
-    .btn-light{background:#fff;color:var(--navy);border-color:var(--line)}
-    .btn-dark{background:var(--navy);color:#fff}
-    .hero{background:radial-gradient(circle at 80% 20%,rgba(48,190,220,.18),transparent 30%),linear-gradient(135deg,#071a33 0%,#0b2a4d 70%,#0d3658 100%);color:#fff;padding:92px 0 86px;overflow:hidden}
-    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:55px}
-    .eyebrow{display:inline-flex;align-items:center;gap:8px;color:#7de5f3;text-transform:uppercase;letter-spacing:.13em;font-weight:800;font-size:.75rem}
-    .eyebrow:before{content:"";width:24px;height:2px;background:var(--cyan)}
-    h1{font-size:clamp(2.5rem,5vw,4.45rem);line-height:1.06;letter-spacing:-.045em;margin:18px 0 22px;max-width:680px}
-    .hero p{font-size:1.1rem;color:#d1dfed;max-width:590px;margin:0 0 30px}
-    .hero-buttons{display:flex;gap:12px;flex-wrap:wrap}
-    .hero-note{margin-top:22px;color:#9fb4c9;font-size:.85rem}
-    .preview{background:rgba(255,255,255,.97);border:1px solid rgba(255,255,255,.3);border-radius:25px;padding:25px;color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.28);transform:rotate(1deg)}
-    .preview-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
-    .preview-label{font-size:.8rem;color:var(--muted);font-weight:700}
-    .pill{background:#e8f8fb;color:#087e9c;padding:6px 10px;border-radius:99px;font-size:.72rem;font-weight:800}
-    .preview-price{font-size:2.5rem;font-weight:900;letter-spacing:-.05em;color:var(--navy);margin:4px 0}
-    .preview-sub{font-size:.82rem;color:var(--muted)}
-    .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
-    .metric{background:#f3f7fb;border:1px solid #e8eef5;padding:13px;border-radius:14px}
-    .metric small{display:block;color:var(--muted);font-size:.73rem}
-    .metric strong{font-size:1.05rem;color:var(--navy)}
-    section{padding:82px 0}
-    .section-head{text-align:center;max-width:720px;margin:0 auto 42px}
-    .section-kicker{font-size:.75rem;text-transform:uppercase;letter-spacing:.14em;font-weight:850;color:#1688b4}
-    h2{font-size:clamp(2rem,3.5vw,2.8rem);line-height:1.15;letter-spacing:-.035em;color:var(--navy);margin:10px 0 14px}
-    .section-head p{color:var(--muted);margin:0;font-size:1.02rem}
-    .products{background:var(--paper)}
-    .product-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-    .product-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:27px;box-shadow:0 8px 28px rgba(10,38,70,.045);display:flex;flex-direction:column}
-    .product-card.featured{border:1.5px solid #8bd9e7;box-shadow:0 16px 40px rgba(19,133,177,.10)}
-    .product-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
-    .product-type{font-size:.74rem;font-weight:850;letter-spacing:.1em;text-transform:uppercase;color:#1684aa}
-    .product-card h3{font-size:1.4rem;color:var(--navy);margin:13px 0 8px}
-    .product-card p{color:var(--muted);margin:0 0 18px}
-    .price{font-size:2.2rem;font-weight:900;color:var(--navy);letter-spacing:-.05em}
-    .price small{font-size:.8rem;font-weight:600;letter-spacing:0;color:var(--muted)}
-    .feature-list{list-style:none;padding:0;margin:17px 0 24px;display:grid;gap:10px;color:#34465c;font-size:.92rem}
-    .feature-list li:before{content:"✓";color:#0797ad;font-weight:900;margin-right:9px}
-    .product-card .btn{margin-top:auto;align-self:flex-start}
-    .bundle{background:linear-gradient(135deg,#071a33,#0e355b);color:#fff}
-    .bundle h2{color:#fff}
-    .bundle .section-head p{color:#c1d2e3}
-    .bundle-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-    .bundle-card{padding:27px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.07);border-radius:var(--radius)}
-    .bundle-card h3{font-size:1.35rem;margin:10px 0;color:#fff}
-    .bundle-card p{color:#c1d2e3}
-    .bundle-card .price{color:#fff}
-    .bundle-card .feature-list{color:#dce8f5}
-    .bundle-card .btn{margin-top:8px}
-    .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .step{padding:24px;border:1px solid var(--line);border-radius:18px;background:#fff}
-    .step-number{width:38px;height:38px;border-radius:12px;background:#e8f8fb;color:#087e9c;display:grid;place-items:center;font-weight:900}
-    .step h3{color:var(--navy);margin:16px 0 7px}
-    .step p{color:var(--muted);margin:0;font-size:.94rem}
-    .features{background:var(--paper)}
-    .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .feature-box{padding:23px;background:#fff;border:1px solid var(--line);border-radius:18px}
-    .feature-icon{font-size:1.35rem}
-    .feature-box h3{font-size:1.05rem;color:var(--navy);margin:12px 0 6px}
-    .feature-box p{font-size:.9rem;color:var(--muted);margin:0}
-    .notice{background:#eaf7fb;border:1px solid #cdebf2;border-radius:16px;padding:19px 22px;color:#31536a;font-size:.9rem;margin-top:28px}
-    .cta{background:linear-gradient(135deg,#eaf8fb,#f4f8fc);text-align:center}
-    .cta p{color:var(--muted);max-width:650px;margin:0 auto 24px}
-    footer{background:#06162b;color:#aebfd1;padding:35px 0}
-    .footer-row{display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
-    footer .brand{font-size:1.1rem}
-    footer p{margin:8px 0 0;font-size:.82rem}
-    .footer-links{display:flex;gap:18px;flex-wrap:wrap;font-size:.85rem}
-    .footer-links a:hover{color:var(--cyan)}
-    @media(max-width:850px){
-      .navlinks{display:none}.hero-grid{grid-template-columns:1fr;gap:35px}.preview{max-width:520px;transform:none}
-      .product-grid,.bundle-grid{grid-template-columns:1fr}.how-grid,.feature-grid{grid-template-columns:1fr 1fr}
-    }
-    @media(max-width:560px){
-      .container{width:min(100% - 30px,1140px)}.nav{min-height:68px}.brand{font-size:1.12rem}
-      .nav-actions .btn{padding:9px 11px;font-size:.8rem}.nav-actions .btn-outline{display:none}
-      .hero{padding:70px 0 65px}section{padding:64px 0}.hero p{font-size:1rem}
-      .how-grid,.feature-grid{grid-template-columns:1fr}.product-card,.bundle-card{padding:22px}
-      .preview{padding:20px}.preview-price{font-size:2.1rem}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#091b32">
+<meta name="description" content="MAVORA — Calculadoras de precificação e materiais informativos para empreendedores.">
+<title>MAVORA | Precificação inteligente</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --navy:#091b32;--navy2:#102b4c;--blue:#1976d2;--cyan:#42c8df;
+  --ink:#17263b;--muted:#718096;--paper:#f5f8fc;--white:#fff;
+  --line:#e3eaf2;--green:#23865b;--shadow:0 18px 55px rgba(9,27,50,.09);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{margin:0;font-family:"DM Sans",sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased}
+body.locked{overflow:hidden}
+button,input{font:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer}
+.container{width:min(1160px,calc(100% - 40px));margin:auto}
+
+/* CABEÇALHO */
+.header{height:78px;position:sticky;top:0;z-index:30;background:rgba(9,27,50,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.09)}
+.header-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{color:#fff;font-family:Manrope,sans-serif;font-size:27px;font-weight:800;letter-spacing:1.5px}
+.brand span{color:var(--cyan)}
+.header-actions{display:flex;align-items:center;gap:14px}
+.nav-links{display:flex;align-items:center;gap:27px;color:#d6e4f3;font-size:13px}
+.nav-links a:hover{color:var(--cyan)}
+.profile-button{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.10);color:white;display:grid;place-items:center;font-weight:800;font-size:16px;transition:.2s}
+.profile-button:hover{background:rgba(66,200,223,.2);transform:translateY(-1px)}
+.login-header{color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:30px;padding:10px 18px;font-size:13px;background:transparent}
+.login-header:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;background:radial-gradient(ellipse at 85% 15%,rgba(66,200,223,.16),transparent 34%),linear-gradient(125deg,#091b32 0%,#102e51 65%,#123b5b 100%);color:white;padding:94px 0 100px}
+.hero:after{content:"";position:absolute;width:440px;height:440px;right:-180px;bottom:-270px;border:1px solid #ffffff15;border-radius:50%;box-shadow:0 0 0 55px #ffffff08,0 0 0 110px #ffffff05}
+.hero-content{position:relative;z-index:1;max-width:760px}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;color:#79deed;font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase}
+.eyebrow:before{content:"";width:23px;height:2px;background:var(--cyan)}
+.hero h1{font-family:Manrope,sans-serif;font-size:clamp(39px,6vw,66px);line-height:1.08;letter-spacing:-2.8px;margin:23px 0 20px;font-weight:800}
+.hero h1 span{color:#65d8e8}
+.hero p{max-width:620px;color:#c8d8e9;font-size:17px;line-height:1.85;margin:0}
+.hero-buttons{display:flex;gap:13px;flex-wrap:wrap;margin-top:32px}
+.btn-primary,.btn-outline{min-height:49px;padding:0 23px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;transition:.2s}
+.btn-primary{background:linear-gradient(105deg,#4bd1df,#238de0);color:#08223d;border:0}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 25px #22a9d544}
+.btn-outline{border:1px solid #ffffff50;color:#fff;background:#ffffff09}
+.btn-outline:hover{background:#ffffff16}
+
+/* SEÇÕES */
+.section{padding:82px 0}
+.section-heading{text-align:center;max-width:680px;margin:0 auto 39px}
+.section-heading .eyebrow{color:#218bb9}
+.section-heading h2{font-family:Manrope,sans-serif;font-size:clamp(27px,4vw,39px);letter-spacing:-1.2px;margin:14px 0 12px;color:var(--navy)}
+.section-heading p{color:var(--muted);line-height:1.75;font-size:15px;margin:0}
+.products-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.product-card{background:white;border:1px solid var(--line);border-radius:var(--radius);padding:29px;box-shadow:0 7px 30px rgba(9,27,50,.035);display:flex;flex-direction:column;min-height:310px;transition:.25s}
+.product-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.product-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.product-icon{width:47px;height:47px;border-radius:14px;display:grid;place-items:center;background:#eaf6fb;color:#1379aa;font-size:21px;font-weight:800}
+.product-tag{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#247fa9;background:#edf8fc;padding:7px 10px;border-radius:30px}
+.product-card h3{font-family:Manrope,sans-serif;font-size:21px;letter-spacing:-.5px;margin:22px 0 10px;color:var(--navy)}
+.product-card p{font-size:13px;line-height:1.8;color:var(--muted);margin:0 0 20px}
+.product-bottom{margin-top:auto;padding-top:17px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.price{font-size:22px;font-weight:800;color:var(--navy)}
+.price small{display:block;font-size:10px;font-weight:500;color:var(--muted);margin-top:2px}
+.product-link{border:0;background:#eaf6fb;color:#126e9e;border-radius:10px;padding:11px 14px;font-size:12px;font-weight:800}
+.product-link:hover{background:#d8eff8}
+
+/* COMO FUNCIONA */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{background:white;border:1px solid var(--line);padding:25px;border-radius:18px}
+.step-number{width:35px;height:35px;border-radius:11px;display:grid;place-items:center;background:#eaf6fb;color:#167ca9;font-weight:800;font-size:13px}
+.step h3{font-size:16px;margin:18px 0 8px;color:var(--navy)}
+.step p{font-size:13px;line-height:1.75;color:var(--muted);margin:0}
+
+/* FAIXA DE CONFIANÇA */
+.info-band{background:linear-gradient(110deg,#0b2441,#123b60);color:white;border-radius:25px;padding:36px;display:flex;align-items:center;justify-content:space-between;gap:25px}
+.info-band h2{font:800 25px Manrope,sans-serif;margin:0 0 9px}
+.info-band p{color:#c8d9e9;font-size:13px;line-height:1.7;margin:0;max-width:610px}
+
+/* RODAPÉ */
+.footer{background:#08182c;color:#b9cadd;padding:35px 0}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.footer .brand{font-size:21px}
+.footer small{font-size:11px;color:#8fa6bc}
+
+/* MENU LATERAL */
+.overlay{position:fixed;inset:0;background:rgba(4,14,27,.56);z-index:50;opacity:0;visibility:hidden;transition:.25s}
+.overlay.open{opacity:1;visibility:visible}
+.drawer{position:fixed;right:0;top:0;height:100dvh;width:min(390px,88vw);background:#fff;z-index:51;padding:25px;transform:translateX(105%);transition:transform .3s ease;box-shadow:-15px 0 50px #06172b25;display:flex;flex-direction:column;overflow-y:auto}
+.drawer.open{transform:translateX(0)}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.drawer-title{font:800 20px Manrope,sans-serif;color:var(--navy)}
+.close-button{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:white;color:var(--ink);font-size:19px}
+.user-summary{display:flex;align-items:center;gap:12px;padding:22px 0;border-bottom:1px solid var(--line)}
+.user-avatar{width:45px;height:45px;border-radius:50%;background:#e8f6fa;color:#137da6;display:grid;place-items:center;font-weight:800;font-size:17px;flex-shrink:0}
+.user-email{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.user-name{font-weight:800;font-size:14px;color:var(--navy);margin-bottom:4px}
+.menu-label{color:#9aa8b8;font-size:10px;font-weight:800;letter-spacing:1.6px;margin:23px 0 10px;text-transform:uppercase}
+.menu-item{display:flex;align-items:center;gap:13px;width:100%;padding:13px 12px;border:0;border-radius:11px;background:transparent;text-align:left;color:#34465b;font-size:13px;font-weight:600}
+.menu-item:hover{background:#f0f7fb;color:#117ba9}
+.menu-icon{width:23px;text-align:center;font-size:17px}
+.menu-item .arrow{margin-left:auto;color:#9aabba}
+.menu-divider{height:1px;background:var(--line);margin:14px 0}
+.drawer-bottom{margin-top:auto;padding-top:20px}
+.logout{width:100%;border:1px solid #f1dede;background:#fff8f8;color:#b54c4c;border-radius:11px;padding:13px;font-weight:700;font-size:13px}
+.drawer-note{font-size:10px;line-height:1.6;color:#9aa7b5;text-align:center;margin-top:16px}
+
+/* MODAL DE CONTA */
+.modal-wrap{position:fixed;inset:0;z-index:70;background:#06172bbd;display:none;align-items:center;justify-content:center;padding:18px;overflow-y:auto}
+.modal-wrap.open{display:flex}
+.modal{background:white;width:min(440px,100%);border-radius:23px;padding:29px;box-shadow:0 25px 80px #0004;position:relative;margin:auto}
+.modal-close{position:absolute;right:19px;top:18px}
+.modal h2{font:800 25px Manrope,sans-serif;color:var(--navy);margin:0 35px 7px 0}
+.modal-sub{font-size:13px;color:var(--muted);line-height:1.6;margin:0 0 22px}
+.form-field{margin:14px 0}
+.form-field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px;color:#31435a}
+.form-field input{width:100%;height:47px;padding:0 13px;border:1px solid #dce5ee;border-radius:10px;outline:none;background:#fbfdff;color:var(--ink);font-size:14px}
+.form-field input:focus{border-color:#31a9cf;box-shadow:0 0 0 3px #31a9cf20}
+.form-submit{width:100%;height:49px;border:0;border-radius:11px;background:linear-gradient(105deg,#42c8df,#218be0);color:#08223d;font-weight:800;margin-top:8px}
+.form-submit:disabled{opacity:.6}
+.form-message{display:none;padding:12px;border-radius:10px;font-size:12px;line-height:1.6;margin-top:14px}
+.form-message.show{display:block}
+.form-message.success{background:#eaf8f0;color:#216443}
+.form-message.error{background:#fff0f0;color:#a53d3d}
+.modal-switch{text-align:center;color:var(--muted);font-size:12px;margin-top:19px}
+.text-button{border:0;background:none;color:#087eae;font-weight:800;padding:4px}
+.forgot{display:block;text-align:right;font-size:11px;color:#087eae;margin-top:8px;border:0;background:none;width:100%}
+
+/* AVISOS */
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);z-index:100;background:#102b4c;color:white;padding:13px 18px;border-radius:12px;font-size:12px;line-height:1.5;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.25s;width:max-content;max-width:calc(100% - 35px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.auth-status{display:none}
+.auth-status.visible{display:inline-flex}
+
+@media(max-width:760px){
+  .container{width:calc(100% - 34px)}
+  .header{height:68px}
+  .brand{font-size:23px}
+  .nav-links{display:none}
+  .login-header{padding:9px 13px;font-size:11px}
+  .hero{padding:76px 0 78px}
+  .hero h1{letter-spacing:-1.8px}
+  .hero p{font-size:15px}
+  .section{padding:64px 0}
+  .products-grid{grid-template-columns:1fr}
+  .product-card{min-height:280px;padding:24px}
+  .steps{grid-template-columns:1fr}
+  .info-band{padding:27px;align-items:flex-start;flex-direction:column}
+  .footer-inner{flex-direction:column;align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+</style>
 </head>
+
 <body>
-  <header class="topbar">
-    <div class="container nav">
-      <a class="brand" href="#inicio" aria-label="MAVORA início"><span class="brand-mark">M</span>MAVORA</a>
-      <nav class="navlinks" aria-label="Navegação principal">
-        <a href="#solucoes">Soluções</a><a href="#pacotes">Pacotes</a><a href="#como-funciona">Como funciona</a><a href="#central">Central do Empreendedor</a>
-      </nav>
-      <div class="nav-actions">
-        <a class="btn btn-outline" href="login.html">Entrar</a>
-        <a class="btn btn-primary" href="cadastro.html">Criar conta</a>
+<header class="header">
+  <div class="container header-inner">
+    <a class="brand" href="#inicio" aria-label="MAVORA início">MAV<span>O</span>RA</a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="#solucoes">Soluções</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#sobre">Sobre a MAVORA</a>
+    </nav>
+    <div class="header-actions">
+      <button class="login-header" id="headerLogin" type="button">Entrar</button>
+      <button class="profile-button" id="profileButton" type="button" aria-label="Abrir menu do perfil" aria-expanded="false">M</button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="inicio">
+  <div class="container">
+    <div class="hero-content">
+      <div class="eyebrow">Clareza para decidir melhor</div>
+      <h1>Seu negócio merece preços com <span>inteligência.</span></h1>
+      <p>Conheça as calculadoras de precificação MAVORA e tenha informações práticas para entender seus custos, formar seus preços e tomar decisões melhores no seu negócio.</p>
+      <div class="hero-buttons">
+        <a class="btn-primary" href="#solucoes">Conhecer as soluções</a>
+        <button class="btn-outline" type="button" id="heroAccount">Acessar minha conta</button>
       </div>
     </div>
-  </header>
+  </div>
+</section>
 
-  <main>
-    <section class="hero" id="inicio">
-      <div class="container hero-grid">
-        <div>
-          <span class="eyebrow">Gestão de preços mais clara</span>
-          <h1>Precifique com confiança. Decida com clareza.</h1>
-          <p>A MAVORA oferece calculadoras de preços e materiais informativos para ajudar empreendedores a entender seus custos, formar preços de venda e acompanhar os resultados de cada decisão.</p>
-          <div class="hero-buttons">
-            <a class="btn btn-primary" href="#solucoes">Conhecer as calculadoras <span>→</span></a>
-            <a class="btn btn-outline" href="cadastro.html">Criar minha conta</a>
-          </div>
-          <div class="hero-note">Pagamento único nos produtos • Sem mensalidade • Acesso conforme o produto adquirido</div>
-        </div>
-        <div class="preview" aria-label="Exemplo explicado de como usar a Calculadora de Preços Clássica">
-          <div class="preview-head"><div><div class="preview-label">EXEMPLO DE USO</div><strong style="color:#0b2745">Precificando uma camiseta</strong></div><span class="pill">PASSO A PASSO</span></div>
-          <div class="preview-label">1. Informe os custos</div>
-          <div class="metric-grid" style="margin-top:10px">
-            <div class="metric"><small>Compra da camiseta</small><strong>R$ 25,00</strong></div>
-            <div class="metric"><small>Embalagem</small><strong>R$ 2,00</strong></div>
-          </div>
-          <div class="preview-sub" style="margin-top:13px">Custo total: R$ 25,00 + R$ 2,00 = <strong style="color:#0b2745">R$ 27,00</strong></div>
-          <div class="preview-label" style="margin-top:19px">2. Defina a margem desejada</div>
-          <div class="preview-price" style="font-size:2rem">25%</div>
-          <div class="preview-sub">A calculadora divide R$ 27,00 por (1 − 0,25).</div>
-          <div style="height:1px;background:#e8eef5;margin:17px 0"></div>
-          <div class="preview-label">3. Veja o preço sugerido</div>
-          <div class="preview-price">R$ 36,00</div>
-          <div class="preview-sub">Vendendo por R$ 36,00, sobram R$ 9,00 após os R$ 27,00 de custos — margem de 25% sobre o preço de venda.</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="products" id="solucoes">
-      <div class="container">
-        <div class="section-head">
-          <span class="section-kicker">Soluções MAVORA</span>
-          <h2>Escolha a calculadora ideal para sua operação</h2>
-          <p>Ferramentas para transformar custos e despesas em informações úteis na hora de definir o preço de venda.</p>
-        </div>
-        <div class="product-grid">
-          <article class="product-card">
-            <div class="product-top"><span class="product-type">Ferramenta individual</span><span class="pill">Clássica</span></div>
-            <h3>Calculadora de Preços Clássica</h3>
-            <p>Uma forma prática de calcular o custo total, testar um preço de venda e estimar o lucro e a margem da operação.</p>
-            <div class="price">R$ 33,90 <small>pagamento único</small></div>
-            <ul class="feature-list">
-              <li>Cadastro do custo por unidade</li>
-              <li>Inclusão de despesas adicionais</li>
-              <li>Definição da margem desejada</li>
-              <li>Preço sugerido e preço testado</li>
-              <li>Estimativa de lucro e margem</li>
-            </ul>
-            <a class="btn btn-dark" href="produto-classica.html">Conhecer a Clássica →</a>
-          </article>
-          <article class="product-card featured">
-            <div class="product-top"><span class="product-type">Ferramenta avançada</span><span class="pill">Mais completa</span></div>
-            <h3>Calculadora de Preços Premium</h3>
-            <p>Uma solução mais completa para operações que precisam considerar diferentes componentes na formação do preço.</p>
-            <div class="price">R$ 47,90 <small>pagamento único</small></div>
-            <ul class="feature-list">
-              <li>Recursos da precificação avançada</li>
-              <li>Taxas e despesas operacionais</li>
-              <li>Fretes e comissões</li>
-              <li>Componentes tributários aplicáveis</li>
-              <li>Visão mais detalhada da composição do preço</li>
-            </ul>
-            <a class="btn btn-dark" href="produto-premium.html">Conhecer a Premium →</a>
-          </article>
-        </div>
-        <div class="notice"><strong>Importante:</strong> os cálculos tributários dependem do regime, produto, localidade e tipo de operação. A ferramenta deverá considerar apenas regras aplicáveis e não substitui a validação de um contador.</div>
-      </div>
-    </section>
-
-    <section class="bundle" id="pacotes">
-      <div class="container">
-        <div class="section-head">
-          <span class="section-kicker">Combinações para empreender</span>
-          <h2>Calculadoras e conteúdos em um só pacote</h2>
-          <p>Escolha uma combinação que reúna ferramentas de precificação e materiais informativos da Central do Empreendedor.</p>
-        </div>
-        <div class="bundle-grid">
-          <article class="bundle-card">
-            <span class="product-type">Pacote de entrada</span>
-            <h3>Pacote Clássico</h3>
-            <p>Para quem quer começar com a calculadora clássica e materiais essenciais para entender melhor a precificação.</p>
-            <div class="price">R$ 52,90 <small style="color:#c1d2e3">pagamento único</small></div>
-            <ul class="feature-list"><li>Calculadora de Preços Clássica</li><li>5 materiais PDF informativos</li><li>Acesso aos conteúdos incluídos no pacote</li></ul>
-            <a class="btn btn-primary" href="pacote-classico.html">Ver Pacote Clássico →</a>
-          </article>
-          <article class="bundle-card">
-            <span class="product-type">Pacote completo</span>
-            <h3>Pacote Premium MAVORA</h3>
-            <p>Uma combinação para quem deseja ter as duas calculadoras e acesso à biblioteca completa de materiais.</p>
-            <div class="price">R$ 65,90 <small style="color:#c1d2e3">pagamento único</small></div>
-            <ul class="feature-list"><li>Calculadora de Preços Clássica</li><li>Calculadora de Preços Premium</li><li>Biblioteca completa de PDFs informativos</li></ul>
-            <a class="btn btn-primary" href="pacote-premium.html">Ver Pacote Premium →</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="como-funciona">
-      <div class="container">
-        <div class="section-head">
-          <span class="section-kicker">Sua jornada</span>
-          <h2>Comece de forma simples</h2>
-          <p>Uma experiência organizada para você conhecer a plataforma, escolher o produto e acompanhar seus materiais.</p>
-        </div>
-        <div class="how-grid">
-          <article class="step"><div class="step-number">01</div><h3>Crie sua conta</h3><p>Faça seu cadastro para acessar a área do cliente e iniciar a experiência de demonstração.</p></article>
-          <article class="step"><div class="step-number">02</div><h3>Experimente a Clássica</h3><p>Após o cadastro, haverá uma simulação gratuita, limitada a uma utilização por conta.</p></article>
-          <article class="step"><div class="step-number">03</div><h3>Escolha seu acesso</h3><p>Compare as opções, adquira o produto desejado e acompanhe seus acessos pelo painel.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="features" id="central">
-      <div class="container">
-        <div class="section-head">
-          <span class="section-kicker">Além da calculadora</span>
-          <h2>Uma área para consultar e organizar suas informações</h2>
-          <p>A MAVORA reúne recursos para apoiar decisões do dia a dia do negócio, sem transformar informação em curso obrigatório.</p>
-        </div>
-        <div class="feature-grid">
-          <article class="feature-box"><div class="feature-icon">📚</div><h3>Central do Empreendedor</h3><p>Materiais PDF sobre custos, precificação, vendas, negociação, marketing e promoções com margem.</p></article>
-          <article class="feature-box"><div class="feature-icon">📄</div><h3>Meus relatórios</h3><p>Salve seus cálculos e consulte relatórios com os dados registrados naquele momento.</p></article>
-          <article class="feature-box"><div class="feature-icon">🔎</div><h3>Verificação MAVORA</h3><p>Relatórios poderão conter ID e código de verificação para confirmar sua emissão pela plataforma.</p></article>
-          <article class="feature-box"><div class="feature-icon">📤</div><h3>Compartilhamento</h3><p>Baixe e compartilhe um relatório específico com contador, sócio ou outro empresário.</p></article>
-          <article class="feature-box"><div class="feature-icon">💬</div><h3>Feedback do cliente</h3><p>Clientes poderão avaliar produtos adquiridos e enviar comentários e sugestões.</p></article>
-          <article class="feature-box"><div class="feature-icon">👤</div><h3>Meu painel</h3><p>Acompanhe seus produtos, calculadoras, relatórios, conteúdos e informações da conta.</p></article>
-        </div>
-        <div class="notice">Os relatórios e códigos de verificação comprovam a emissão pela MAVORA; não representam auditoria dos dados informados pelo usuário nem substituem documentos contábeis ou fiscais oficiais.</div>
-      </div>
-    </section>
-
-    <section class="cta">
-      <div class="container">
-        <span class="section-kicker">MAVORA</span>
-        <h2>Mais clareza na formação do preço começa com informação.</h2>
-        <p>Crie sua conta para conhecer a experiência da MAVORA e encontrar a solução mais adequada para o seu negócio.</p>
-        <a class="btn btn-dark" href="cadastro.html">Criar minha conta →</a>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container footer-row">
-      <div><a class="brand" href="#inicio"><span class="brand-mark">M</span>MAVORA</a><p>Precificação e informação para empreendedores.</p></div>
-      <div class="footer-links"><a href="#solucoes">Soluções</a><a href="#pacotes">Pacotes</a><a href="login.html">Entrar</a><a href="cadastro.html">Criar conta</a></div>
-      <p>© <span id="year"></span> MAVORA. Todos os direitos reservados.</p>
+<section class="section" id="solucoes">
+  <div class="container">
+    <div class="section-heading">
+      <div class="eyebrow">Soluções MAVORA</div>
+      <h2>Ferramentas para precificar melhor</h2>
+      <p>Escolha a solução adequada ao momento do seu negócio. Cada produto tem uma finalidade e um conjunto próprio de recursos.</p>
     </div>
-  </footer>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+    <div class="products-grid">
+      <article class="product-card">
+        <div class="product-top"><div class="product-icon">01</div><span class="product-tag">Ferramenta individual</span></div>
+        <h3>Calculadora de Preços Clássica</h3>
+        <p>Uma ferramenta direta para organizar o custo por unidade, despesas adicionais, margem desejada, preço sugerido, preço praticado e lucro estimado.</p>
+        <div class="product-bottom"><div class="price">R$ 33,90<small>Pagamento único</small></div><button class="product-link" type="button" data-product="classica">Conhecer</button></div>
+      </article>
+      <article class="product-card">
+        <div class="product-top"><div class="product-icon">02</div><span class="product-tag">Ferramenta avançada</span></div>
+        <h3>Calculadora de Preços Premium</h3>
+        <p>Uma solução mais completa, com recursos adicionais para taxas, comissões, fretes, despesas operacionais e componentes tributários aplicáveis à operação.</p>
+        <div class="product-bottom"><div class="price">R$ 47,90<small>Pagamento único</small></div><button class="product-link" type="button" data-product="premium">Conhecer</button></div>
+      </article>
+      <article class="product-card">
+        <div class="product-top"><div class="product-icon">03</div><span class="product-tag">Conjunto de materiais</span></div>
+        <h3>Pacote Clássico</h3>
+        <p>A Calculadora Clássica acompanhada de cinco materiais informativos para compreender fundamentos de custos, precificação e decisões comerciais.</p>
+        <div class="product-bottom"><div class="price">R$ 52,90<small>Pagamento único</small></div><button class="product-link" type="button" data-product="pacote-classico">Conhecer</button></div>
+      </article>
+      <article class="product-card">
+        <div class="product-top"><div class="product-icon">04</div><span class="product-tag">Conjunto completo</span></div>
+        <h3>Pacote Premium MAVORA</h3>
+        <p>Reúne as calculadoras Clássica e Premium e a biblioteca completa de materiais informativos, incluindo conteúdos complementares e aprofundados.</p>
+        <div class="product-bottom"><div class="price">R$ 65,90<small>Pagamento único</small></div><button class="product-link" type="button" data-product="pacote-premium">Conhecer</button></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="como-funciona" style="background:#edf3f9">
+  <div class="container">
+    <div class="section-heading">
+      <div class="eyebrow">Uma experiência simples</div>
+      <h2>Comece sem complicação</h2>
+      <p>Uma jornada organizada para você encontrar o que precisa sem ficar pulando de página em página.</p>
+    </div>
+    <div class="steps">
+      <article class="step"><div class="step-number">01</div><h3>Crie sua conta</h3><p>Cadastre seu e-mail e senha para ter seu espaço pessoal na MAVORA.</p></article>
+      <article class="step"><div class="step-number">02</div><h3>Escolha sua solução</h3><p>Conheça as calculadoras e os materiais e escolha o acesso adequado.</p></article>
+      <article class="step"><div class="step-number">03</div><h3>Use seus recursos</h3><p>Acesse os produtos liberados, organize seus cálculos e consulte seus materiais.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="sobre">
+  <div class="container">
+    <div class="info-band">
+      <div><h2>Mais clareza na formação dos seus preços.</h2><p>A MAVORA reúne ferramentas de precificação e materiais informativos em uma experiência simples, organizada e pensada para empreendedores.</p></div>
+      <a class="btn-primary" href="#solucoes">Explorar soluções</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><a class="brand" href="#inicio">MAV<span>O</span>RA</a><div style="font-size:11px;margin-top:7px">Preço inteligente. Decisões com clareza.</div></div>
+    <small>© <span id="year"></span> MAVORA. Todos os direitos reservados.</small>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Menu da conta" aria-hidden="true">
+  <div class="drawer-head"><div class="drawer-title">Minha conta</div><button class="close-button" id="closeDrawer" type="button" aria-label="Fechar menu">×</button></div>
+  <div class="user-summary">
+    <div class="user-avatar" id="drawerAvatar">M</div>
+    <div style="min-width:0"><div class="user-name" id="drawerName">Visitante</div><div class="user-email" id="drawerEmail">Entre ou crie sua conta</div></div>
+  </div>
+  <div class="menu-label">Minha MAVORA</div>
+  <button class="menu-item" type="button" data-area="produtos"><span class="menu-icon">▤</span> Meus produtos <span class="arrow">›</span></button>
+  <button class="menu-item" type="button" data-area="calculadoras"><span class="menu-icon">▦</span> Minhas calculadoras <span class="arrow">›</span></button>
+  <button class="menu-item" type="button" data-area="relatorios"><span class="menu-icon">▧</span> Meus relatórios <span class="arrow">›</span></button>
+  <div class="menu-divider"></div>
+  <div class="menu-label">Atendimento e conta</div>
+  <button class="menu-item" type="button" data-area="ajuda"><span class="menu-icon">ⓘ</span> Central de ajuda <span class="arrow">›</span></button>
+  <button class="menu-item" type="button" data-area="feedback"><span class="menu-icon">♡</span> Feedback <span class="arrow">›</span></button>
+  <button class="menu-item" type="button" data-area="configuracoes"><span class="menu-icon">⚙</span> Configurações <span class="arrow">›</span></button>
+  <div class="drawer-bottom">
+    <button class="logout" id="logoutButton" type="button" style="display:none">Sair da conta</button>
+    <button class="form-submit" id="drawerLogin" type="button">Entrar ou criar conta</button>
+    <div class="drawer-note">Sua conta é pessoal. Seus acessos dependem das compras confirmadas.</div>
+  </div>
+</aside>
+
+<div class="modal-wrap" id="accountModal">
+  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="close-button modal-close" id="closeModal" type="button" aria-label="Fechar">×</button>
+    <h2 id="modalTitle">Bem-vindo à MAVORA</h2>
+    <p class="modal-sub" id="modalDescription">Entre na sua conta para acessar sua área pessoal.</p>
+    <form id="accountForm">
+      <div class="form-field"><label for="accountEmail">E-mail</label><input id="accountEmail" type="email" autocomplete="email" placeholder="voce@exemplo.com" required></div>
+      <div class="form-field"><label for="accountPassword">Senha</label><input id="accountPassword" type="password" autocomplete="current-password" placeholder="Digite sua senha" minlength="6" required></div>
+      <button class="form-submit" id="submitAccount" type="submit">Entrar na MAVORA</button>
+    </form>
+    <button class="forgot" id="forgotPassword" type="button">Esqueci minha senha</button>
+    <div class="form-message" id="accountMessage" role="status" aria-live="polite"></div>
+    <div class="modal-switch"><span id="switchText">Ainda não tem conta?</span> <button class="text-button" id="switchMode" type="button">Criar minha conta</button></div>
+  </section>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* CONFIGURAÇÃO SUPABASE
+   Use somente a chave publishable no navegador.
+   Nunca coloque uma secret key ou service_role aqui. */
+const SUPABASE_URL = 'https://rwokprrjtyhdpgkkcndh.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_vz0fkm8_qcDtDQzKt7MpQw_hvovt44v';
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY,
+  {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}
+);
+
+const $ = id => document.getElementById(id);
+let accountMode = 'login';
+let currentUser = null;
+let toastTimer = null;
+$('year').textContent = new Date().getFullYear();
+
+function toast(message){
+  const el=$('toast');el.textContent=message;el.classList.add('show');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3500);
+}
+function openDrawer(){
+  $('drawer').classList.add('open');$('overlay').classList.add('open');
+  $('drawer').setAttribute('aria-hidden','false');
+  $('profileButton').setAttribute('aria-expanded','true');
+  document.body.classList.add('locked');
+}
+function closeDrawer(){
+  $('drawer').classList.remove('open');$('overlay').classList.remove('open');
+  $('drawer').setAttribute('aria-hidden','true');
+  $('profileButton').setAttribute('aria-expanded','false');
+  document.body.classList.remove('locked');
+}
+function openModal(mode='login'){
+  closeDrawer();setAccountMode(mode);$('accountModal').classList.add('open');
+  document.body.classList.add('locked');setTimeout(()=>$('accountEmail').focus(),100);
+}
+function closeModal(){
+  $('accountModal').classList.remove('open');document.body.classList.remove('locked');
+  $('accountMessage').className='form-message';
+}
+function setAccountMode(mode){
+  accountMode=mode;const isLogin=mode==='login';
+  $('modalTitle').textContent=isLogin?'Bem-vindo de volta':'Crie sua conta MAVORA';
+  $('modalDescription').textContent=isLogin?'Entre com seu e-mail e senha para continuar.':'Cadastre-se para ter seu espaço pessoal na MAVORA.';
+  $('submitAccount').textContent=isLogin?'Entrar na MAVORA':'Criar minha conta';
+  $('switchText').textContent=isLogin?'Ainda não tem conta?':'Já tem uma conta?';
+  $('switchMode').textContent=isLogin?'Criar minha conta':'Entrar';
+  $('forgotPassword').style.display=isLogin?'block':'none';
+  $('accountPassword').autocomplete=isLogin?'current-password':'new-password';
+  $('accountMessage').className='form-message';
+}
+function showAccountMessage(message,type){
+  const el=$('accountMessage');el.textContent=message;el.className='form-message show '+type;
+}
+function updateAccountUI(user){
+  currentUser=user||null;
+  if(currentUser){
+    const email=currentUser.email||'Conta MAVORA';
+    const initial=email.trim().charAt(0).toUpperCase()||'M';
+    $('profileButton').textContent=initial;$('drawerAvatar').textContent=initial;
+    $('drawerName').textContent='Minha conta';$('drawerEmail').textContent=email;
+    $('headerLogin').style.display='none';$('logoutButton').style.display='block';$('drawerLogin').style.display='none';
+  }else{
+    $('profileButton').textContent='M';$('drawerAvatar').textContent='M';
+    $('drawerName').textContent='Visitante';$('drawerEmail').textContent='Entre ou crie sua conta';
+    $('headerLogin').style.display='inline-flex';$('logoutButton').style.display='none';$('drawerLogin').style.display='block';
+  }
+}
+
+/* NAVEGAÇÃO DO PERFIL */
+$('profileButton').addEventListener('click',openDrawer);
+$('closeDrawer').addEventListener('click',closeDrawer);
+$('overlay').addEventListener('click',closeDrawer);
+$('headerLogin').addEventListener('click',()=>openModal('login'));
+$('heroAccount').addEventListener('click',()=>currentUser?openDrawer():openModal('login'));
+$('drawerLogin').addEventListener('click',()=>openModal('login'));
+$('closeModal').addEventListener('click',closeModal);
+$('accountModal').addEventListener('click',event=>{if(event.target===$('accountModal'))closeModal()});
+$('switchMode').addEventListener('click',()=>setAccountMode(accountMode==='login'?'signup':'login'));
+document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeDrawer();closeModal()}});
+
+/* LOGIN E CADASTRO */
+$('accountForm').addEventListener('submit',async event=>{
+  event.preventDefault();
+  const email=$('accountEmail').value.trim();
+  const password=$('accountPassword').value;
+  const button=$('submitAccount');
+  button.disabled=true;button.textContent='Aguarde...';
+  $('accountMessage').className='form-message';
+  try{
+    if(accountMode==='login'){
+      const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+      if(error)throw error;
+      updateAccountUI(data.user);
+      showAccountMessage('Acesso realizado. Sua conta está conectada à MAVORA.','success');
+      setTimeout(()=>{closeModal();openDrawer();toast('Bem-vindo de volta à MAVORA!')},700);
+    }else{
+      const {data,error}=await supabaseClient.auth.signUp({
+        email,password,
+        options:{emailRedirectTo:window.location.origin+window.location.pathname}
+      });
+      if(error)throw error;
+      if(data.session){
+        updateAccountUI(data.user);
+        showAccountMessage('Conta criada e acesso realizado com sucesso.','success');
+      }else{
+        showAccountMessage('Cadastro iniciado! Confira seu e-mail e confirme o endereço para ativar sua conta.','success');
+      }
+    }
+  }catch(error){
+    showAccountMessage(error.message||'Não foi possível concluir. Confira os dados e tente novamente.','error');
+  }finally{
+    button.disabled=false;
+    button.textContent=accountMode==='login'?'Entrar na MAVORA':'Criar minha conta';
+  }
+});
+
+/* RECUPERAÇÃO DE SENHA */
+$('forgotPassword').addEventListener('click',async()=>{
+  const email=$('accountEmail').value.trim();
+  if(!email){
+    showAccountMessage('Digite seu e-mail primeiro para receber o link de recuperação.','error');
+    $('accountEmail').focus();return;
+  }
+  try{
+    const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{
+      redirectTo:window.location.origin+window.location.pathname
+    });
+    if(error)throw error;
+    showAccountMessage('Se o e-mail estiver cadastrado, você receberá as instruções de recuperação.','success');
+  }catch(error){
+    showAccountMessage(error.message||'Não foi possível solicitar a recuperação.','error');
+  }
+});
+
+/* RESTAURAÇÃO AUTOMÁTICA DA SESSÃO */
+async function restoreSession(){
+  try{
+    const {data,error}=await supabaseClient.auth.getSession();
+    if(error)throw error;
+    updateAccountUI(data.session?.user||null);
+  }catch(error){
+    updateAccountUI(null);console.error('Erro ao recuperar sessão:',error);
+  }
+}
+supabaseClient.auth.onAuthStateChange((event,session)=>{
+  updateAccountUI(session?.user||null);
+});
+
+/* SAIR DA CONTA */
+$('logoutButton').addEventListener('click',async()=>{
+  const {error}=await supabaseClient.auth.signOut();
+  if(error){toast('Não foi possível sair. Tente novamente.');return}
+  updateAccountUI(null);closeDrawer();toast('Você saiu da sua conta.');
+});
+
+/* ÁREAS A SEREM IMPLEMENTADAS NAS PRÓXIMAS ETAPAS */
+const areaNames={
+  produtos:'Meus produtos e biblioteca de materiais',
+  calculadoras:'Minhas calculadoras',
+  relatorios:'Meus relatórios',
+  ajuda:'Central de ajuda',
+  feedback:'Feedback',
+  configuracoes:'Configurações da conta'
+};
+document.querySelectorAll('[data-area]').forEach(button=>{
+  button.addEventListener('click',()=>{
+    const area=button.dataset.area;
+    if(!currentUser){openModal('login');toast('Entre na sua conta para acessar sua área pessoal.');return}
+    closeDrawer();toast(areaNames[area]+' será implementado na próxima etapa.');
+  });
+});
+
+/* APRESENTAÇÃO DOS PRODUTOS */
+const productNames={
+  classica:'Calculadora de Preços Clássica',
+  premium:'Calculadora de Preços Premium',
+  'pacote-classico':'Pacote Clássico',
+  'pacote-premium':'Pacote Premium MAVORA'
+};
+document.querySelectorAll('[data-product]').forEach(button=>{
+  button.addEventListener('click',()=>{
+    toast(productNames[button.dataset.product]+': página de detalhes e compra será implementada na próxima etapa.');
+  });
+});
+
+restoreSession();
+</script>
 </body>
 </html>
