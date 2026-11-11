@@ -144,6 +144,25 @@ button{cursor:pointer}
 .auth-status{display:none}
 .auth-status.visible{display:inline-flex}
 
+/* ACESSIBILIDADE E USABILIDADE */
+.skip-link{position:fixed;left:12px;top:-60px;z-index:120;background:#fff;color:var(--navy);padding:12px 16px;border-radius:10px;font-weight:800;box-shadow:var(--shadow)}
+.skip-link:focus{top:12px}
+:focus-visible{outline:3px solid #20a9d0!important;outline-offset:3px}
+button,a,input,select,textarea{touch-action:manipulation}
+button:disabled{cursor:not-allowed;opacity:.62}
+.menu-item,.product-link,.login-header,.profile-button,.close-button,.back-home{min-height:44px}
+.internal-view[aria-hidden="true"]{display:none}
+@media(prefers-contrast:more){
+  :root{--muted:#536477;--line:#c4d0dc}
+  .product-tag,.internal-kicker{color:#075b80}
+}
+@media(max-width:420px){
+  .modal{padding:23px 19px;border-radius:19px}
+  .modal h2{font-size:22px}
+  .drawer{padding:21px}
+  .hero h1{font-size:clamp(34px,10vw,44px)}
+}
+
 @media(max-width:760px){
   .container{width:calc(100% - 34px)}
   .header{height:68px}
@@ -188,6 +207,7 @@ button{cursor:pointer}
 </head>
 
 <body>
+<a class="skip-link" href="#inicio">Pular para o conteúdo principal</a>
 <header class="header">
   <div class="container header-inner">
     <a class="brand" href="#inicio" aria-label="MAVORA início">MAV<span>O</span>RA</a>
@@ -198,7 +218,7 @@ button{cursor:pointer}
     </nav>
     <div class="header-actions">
       <button class="login-header" id="headerLogin" type="button">Entrar</button>
-      <button class="profile-button" id="profileButton" type="button" aria-label="Abrir menu do perfil" aria-expanded="false">M</button>
+      <button class="profile-button" id="profileButton" type="button" aria-label="Abrir menu da sua conta" aria-controls="drawer" aria-expanded="false">M</button>
     </div>
   </div>
 </header>
@@ -279,7 +299,7 @@ button{cursor:pointer}
 </section>
 </main>
 
-<section class="internal-view" id="internalView" aria-live="polite">
+<section class="internal-view" id="internalView" aria-live="polite" aria-hidden="true">
   <div class="internal-wrap">
     <div class="internal-top">
       <button class="back-home" id="backHome" type="button">← Voltar ao início</button>
@@ -304,14 +324,14 @@ button{cursor:pointer}
     <div style="min-width:0"><div class="user-name" id="drawerName">Visitante</div><div class="user-email" id="drawerEmail">Entre ou crie sua conta</div></div>
   </div>
   <div class="menu-label">Minha MAVORA</div>
-  <button class="menu-item" type="button" data-area="produtos"><span class="menu-icon">▤</span> Meus produtos <span class="arrow">›</span></button>
-  <button class="menu-item" type="button" data-area="calculadoras"><span class="menu-icon">▦</span> Minhas calculadoras <span class="arrow">›</span></button>
-  <button class="menu-item" type="button" data-area="relatorios"><span class="menu-icon">▧</span> Meus relatórios <span class="arrow">›</span></button>
+  <button class="menu-item" type="button" data-area="produtos" aria-label="Abrir meus produtos"><span class="menu-icon">▤</span> Meus produtos <span class="arrow">›</span></button>
+  <button class="menu-item" type="button" data-area="calculadoras" aria-label="Abrir minhas calculadoras"><span class="menu-icon">▦</span> Minhas calculadoras <span class="arrow">›</span></button>
+  <button class="menu-item" type="button" data-area="relatorios" aria-label="Abrir meus relatórios"><span class="menu-icon">▧</span> Meus relatórios <span class="arrow">›</span></button>
   <div class="menu-divider"></div>
   <div class="menu-label">Atendimento e conta</div>
-  <button class="menu-item" type="button" data-area="ajuda"><span class="menu-icon">ⓘ</span> Central de ajuda <span class="arrow">›</span></button>
-  <button class="menu-item" type="button" data-area="feedback"><span class="menu-icon">♡</span> Feedback <span class="arrow">›</span></button>
-  <button class="menu-item" type="button" data-area="configuracoes"><span class="menu-icon">⚙</span> Configurações <span class="arrow">›</span></button>
+  <button class="menu-item" type="button" data-area="ajuda" aria-label="Abrir central de ajuda"><span class="menu-icon">ⓘ</span> Central de ajuda <span class="arrow">›</span></button>
+  <button class="menu-item" type="button" data-area="feedback" aria-label="Abrir feedback"><span class="menu-icon">♡</span> Feedback <span class="arrow">›</span></button>
+  <button class="menu-item" type="button" data-area="configuracoes" aria-label="Abrir configurações"><span class="menu-icon">⚙</span> Configurações <span class="arrow">›</span></button>
   <div class="drawer-bottom">
     <button class="logout" id="logoutButton" type="button" style="display:none">Sair da conta</button>
     <button class="form-submit" id="drawerLogin" type="button">Entrar ou criar conta</button>
@@ -346,11 +366,13 @@ button{cursor:pointer}
 const SUPABASE_URL = 'https://rwokprrjtyhdpgkkcndh.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_vz0fkm8_qcDtDQzKt7MpQw_hvovt44v';
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY,
-  {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}
-);
+const supabaseClient = window.supabase?.createClient
+  ? window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY,
+      {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}
+    )
+  : null;
 
 const $ = id => document.getElementById(id);
 let accountMode = 'login';
@@ -362,25 +384,32 @@ function toast(message){
   const el=$('toast');el.textContent=message;el.classList.add('show');
   clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3500);
 }
+let lastFocusedElement=null;
 function openDrawer(){
+  lastFocusedElement=document.activeElement;
   $('drawer').classList.add('open');$('overlay').classList.add('open');
   $('drawer').setAttribute('aria-hidden','false');
   $('profileButton').setAttribute('aria-expanded','true');
   document.body.classList.add('locked');
+  setTimeout(()=>$('closeDrawer').focus(),80);
 }
 function closeDrawer(){
   $('drawer').classList.remove('open');$('overlay').classList.remove('open');
   $('drawer').setAttribute('aria-hidden','true');
   $('profileButton').setAttribute('aria-expanded','false');
   document.body.classList.remove('locked');
+  if(lastFocusedElement && typeof lastFocusedElement.focus==='function') lastFocusedElement.focus();
 }
+let modalReturnFocus=null;
 function openModal(mode='login'){
-  closeDrawer();$('accountEmail').disabled=false;setAccountMode(mode);$('accountModal').classList.add('open');
+  modalReturnFocus=document.activeElement;
+  closeDrawer();$('drawer').setAttribute('aria-hidden','true');$('accountEmail').disabled=false;setAccountMode(mode);$('accountModal').classList.add('open');
   document.body.classList.add('locked');setTimeout(()=>$('accountEmail').focus(),100);
 }
 function closeModal(){
   $('accountModal').classList.remove('open');document.body.classList.remove('locked');
   $('accountMessage').className='form-message';
+  if(modalReturnFocus && typeof modalReturnFocus.focus==='function') modalReturnFocus.focus();
 }
 function setAccountMode(mode){
   accountMode=mode;const isLogin=mode==='login';const isUpdate=mode==='update';const isSignup=mode==='signup';
@@ -443,6 +472,7 @@ function friendlyAuthError(error){
 
 $('accountForm').addEventListener('submit',async event=>{
   event.preventDefault();
+  if(!supabaseClient){showAccountMessage('O serviço de conta não carregou. Verifique sua conexão e atualize a página.','error');return;}
   const email=$('accountEmail').value.trim().toLowerCase();
   const password=$('accountPassword').value;
   const button=$('submitAccount');
@@ -490,6 +520,7 @@ $('accountForm').addEventListener('submit',async event=>{
 
 /* RECUPERAÇÃO DE SENHA */
 $('forgotPassword').addEventListener('click',async()=>{
+  if(!supabaseClient){showAccountMessage('O serviço de conta não carregou. Verifique sua conexão e atualize a página.','error');return;}
   const email=$('accountEmail').value.trim().toLowerCase();
   if(!email){showAccountMessage('Digite seu e-mail primeiro para receber o link de recuperação.','error');$('accountEmail').focus();return;}
   const button=$('forgotPassword');button.disabled=true;button.textContent='Enviando...';
@@ -503,6 +534,7 @@ $('forgotPassword').addEventListener('click',async()=>{
 
 /* RESTAURAÇÃO AUTOMÁTICA DA SESSÃO */
 async function restoreSession(){
+  if(!supabaseClient){updateAccountUI(null);return;}
   try{
     const {data,error}=await supabaseClient.auth.getSession();
     if(error)throw error;
@@ -511,16 +543,19 @@ async function restoreSession(){
     updateAccountUI(null);console.error('Erro ao recuperar sessão:',error);
   }
 }
-supabaseClient.auth.onAuthStateChange((event,session)=>{
-  updateAccountUI(session?.user||null);
-  if(event==='PASSWORD_RECOVERY'){
-    openModal('update');
-    showAccountMessage('Link validado! Escolha sua nova senha abaixo.','success');
-  }
-});
+if(supabaseClient){
+  supabaseClient.auth.onAuthStateChange((event,session)=>{
+    updateAccountUI(session?.user||null);
+    if(event==='PASSWORD_RECOVERY'){
+      openModal('update');
+      showAccountMessage('Link validado! Escolha sua nova senha abaixo.','success');
+    }
+  });
+}
 
 /* SAIR DA CONTA */
 $('logoutButton').addEventListener('click',async()=>{
+  if(!supabaseClient){toast('O serviço de conta não carregou. Atualize a página e tente novamente.');return;}
   const {error}=await supabaseClient.auth.signOut();
   if(error){toast('Não foi possível sair. Tente novamente.');return}
   updateAccountUI(null);closeDrawer();toast('Você saiu da sua conta.');
@@ -544,13 +579,20 @@ function showInternalPage(key){
   closeDrawer();
   homeSections.forEach(el=>el.style.display='none');
   internalView.classList.add('active');
-  internalContent.innerHTML=`<div class="internal-kicker">Sua área de trabalho</div><h1>${page.title}</h1><p class="internal-lead">${page.lead}</p>${page.body}`;
+  internalView.setAttribute('aria-hidden','false');
+  internalContent.innerHTML=`<div class="internal-kicker">Sua área de trabalho</div><h1 id="internalPageTitle" tabindex="-1">${page.title}</h1><p class="internal-lead">${page.lead}</p>${page.body}`;
   window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(()=>$('internalPageTitle')?.focus(),100);
   if(key==='configuracoes'){
     $('settingsEmail').textContent='Conta conectada: '+(currentUser.email||'');
     $('settingsReset').addEventListener('click',async()=>{
-      const {error}=await supabaseClient.auth.resetPasswordForEmail(currentUser.email,{redirectTo:window.location.origin+window.location.pathname});
-      toast(error?friendlyAuthError(error):'Se o endereço estiver correto, enviaremos um link para redefinir sua senha.');
+      if(!supabaseClient){toast('O serviço de conta não carregou. Atualize a página e tente novamente.');return;}
+      const button=$('settingsReset');button.disabled=true;button.textContent='Enviando...';
+      try{
+        const {error}=await supabaseClient.auth.resetPasswordForEmail(currentUser.email,{redirectTo:window.location.origin+window.location.pathname});
+        toast(error?friendlyAuthError(error):'Se o endereço estiver correto, enviaremos um link para redefinir sua senha.');
+      }catch(error){toast(friendlyAuthError(error));}
+      finally{button.disabled=false;button.textContent='Enviar link para redefinir senha';}
     });
   }
   if(key==='feedback'){
@@ -562,6 +604,7 @@ function showInternalPage(key){
 }
 function returnHome(){
   internalView.classList.remove('active');
+  internalView.setAttribute('aria-hidden','true');
   homeSections.forEach(el=>el.style.display='');
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -582,9 +625,11 @@ document.querySelectorAll('[data-product]').forEach(button=>{
     const item=productDetails[button.dataset.product];if(!item)return;
     homeSections.forEach(el=>el.style.display='none');
     internalView.classList.add('active');
-    internalContent.innerHTML=`<div class="internal-kicker">Soluções MAVORA</div><h1>${item.title}</h1><p class="internal-lead">${item.desc}</p><div class="internal-panel"><h3>${item.price}</h3><p class="internal-lead">Pagamento único. A liberação do acesso será vinculada à confirmação da compra.</p><div class="internal-empty">A etapa de pagamento e liberação automática ainda será conectada. Nenhuma cobrança será realizada por este botão neste momento.</div><p style="margin-top:18px"><button class="back-home" type="button" id="productBack">← Voltar às soluções</button></p></div>`;
+    internalView.setAttribute('aria-hidden','false');
+    internalContent.innerHTML=`<div class="internal-kicker">Soluções MAVORA</div><h1 id="internalPageTitle" tabindex="-1">${item.title}</h1><p class="internal-lead">${item.desc}</p><div class="internal-panel"><h3>${item.price}</h3><p class="internal-lead">Pagamento único. A liberação do acesso será vinculada à confirmação da compra.</p><div class="internal-empty">A etapa de pagamento e liberação automática ainda será conectada. Nenhuma cobrança será realizada por este botão neste momento.</div><p style="margin-top:18px"><button class="back-home" type="button" id="productBack">← Voltar às soluções</button></p></div>`;
     $('productBack').addEventListener('click',returnHome);
     window.scrollTo({top:0,behavior:'smooth'});
+    setTimeout(()=>$('internalPageTitle')?.focus(),100);
   });
 });
 
