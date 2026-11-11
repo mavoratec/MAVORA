@@ -55,7 +55,7 @@ form.addEventListener('submit',async(e)=>{
  try{
   const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
   if(error)throw error;
-  show('Login realizado com sucesso! Sua sessão está ativa. O painel do cliente será a próxima página que vamos construir.','ok');
+  window.location.href = 'painel.html';
  }catch(err){show(err.message||'Não foi possível entrar. Confira seu e-mail e senha.','err')}
  finally{btn.disabled=false;btn.textContent='Entrar na MAVORA'}
 });
