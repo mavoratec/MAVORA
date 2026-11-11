@@ -1,132 +1,73 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#071a33">
-  <meta name="description" content="Crie sua conta MAVORA e tenha acesso à sua área de empreendedor.">
-  <title>Criar conta | MAVORA</title>
-  <style>
-    :root{--navy:#071a33;--navy2:#0c2748;--blue:#1677d2;--cyan:#38c5df;--ink:#14243a;--muted:#64748b;--line:#e5edf5;--paper:#f4f8fc;--white:#fff}
-    *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper);line-height:1.55}
-    a{text-decoration:none;color:inherit}.top{height:76px;background:rgba(7,26,51,.98);display:flex;align-items:center}
-    .wrap{width:min(1120px,calc(100% - 36px));margin:auto}.nav{display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;align-items:center;gap:11px;color:#fff;font-size:1.28rem;font-weight:850;letter-spacing:.11em}
-    .mark{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--cyan),#1684dc);display:grid;place-items:center;color:#071a33;font-weight:950;letter-spacing:0}
-    .back{color:#d7e5f2;font-size:.9rem}.back:hover{color:var(--cyan)}
-    main{padding:48px 0 64px}.layout{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;max-width:980px;margin:auto}
-    .intro{padding:20px 0}.eyebrow{display:inline-flex;align-items:center;gap:8px;color:#1688b4;text-transform:uppercase;letter-spacing:.13em;font-weight:850;font-size:.74rem}
-    .eyebrow:before{content:"";width:23px;height:2px;background:var(--cyan)}
-    h1{font-size:clamp(2.15rem,4vw,3.25rem);line-height:1.08;letter-spacing:-.045em;color:var(--navy);margin:16px 0}
-    .intro p{font-size:1.03rem;color:var(--muted);max-width:440px}
-    .benefits{display:grid;gap:15px;margin-top:30px}.benefit{display:flex;gap:12px;align-items:flex-start;color:#34465c;font-size:.92rem}
-    .check{flex:0 0 27px;width:27px;height:27px;border-radius:9px;background:#e4f7fa;color:#0788a5;display:grid;place-items:center;font-weight:900}
-    .card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:32px;box-shadow:0 20px 55px rgba(8,30,58,.09)}
-    .card-head{margin-bottom:24px}.card h2{font-size:1.55rem;color:var(--navy);margin:0 0 5px;letter-spacing:-.025em}.card-head p{color:var(--muted);margin:0;font-size:.9rem}
-    .field{margin:16px 0}.field label{display:block;font-size:.84rem;font-weight:750;color:#253950;margin-bottom:7px}
-    .field input{width:100%;height:49px;border:1px solid #dce5ef;border-radius:11px;padding:0 14px;font:inherit;color:var(--ink);background:#fff;outline:none;transition:.18s}
-    .field input:focus{border-color:#32b8d4;box-shadow:0 0 0 3px rgba(56,197,223,.15)}
-    .field input::placeholder{color:#9aa9b8}.password-wrap{position:relative}.password-wrap input{padding-right:75px}
-    .show{position:absolute;right:11px;top:50%;transform:translateY(-50%);border:0;background:none;color:#147fa6;font-weight:750;font-size:.78rem;cursor:pointer}
-    .hint{font-size:.76rem;color:#8391a2;margin-top:6px}.terms{display:flex;align-items:flex-start;gap:9px;margin:19px 0;color:#64748b;font-size:.8rem}
-    .terms input{margin-top:4px;accent-color:#1688b4}.terms a{color:#147fa6;text-decoration:underline}
-    .submit{width:100%;height:51px;border:0;border-radius:12px;background:linear-gradient(135deg,#27b8d8,#1680d8);color:#061a32;font-size:.95rem;font-weight:850;cursor:pointer;box-shadow:0 9px 24px rgba(32,170,211,.19)}
-    .submit:hover{filter:brightness(1.04);transform:translateY(-1px)}
-    .login{text-align:center;color:var(--muted);font-size:.88rem;margin:20px 0 0}.login a{color:#117da6;font-weight:800}
-    .security{display:flex;justify-content:center;gap:7px;align-items:center;color:#8492a2;font-size:.75rem;margin-top:18px}
-    .message{display:none;margin-top:15px;padding:12px 14px;border-radius:11px;background:#fff6e8;border:1px solid #f4dfb9;color:#78551b;font-size:.82rem}
-    footer{text-align:center;color:#8a98a8;font-size:.78rem;padding:0 16px 28px}
-    @media(max-width:780px){main{padding:30px 0 48px}.layout{grid-template-columns:1fr;gap:20px;max-width:510px}.intro{padding:4px 0}.intro p{font-size:.95rem}.benefits{grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.benefit{font-size:.8rem}.card{padding:25px}}
-    @media(max-width:440px){.benefits{grid-template-columns:1fr}.top{height:68px}.brand{font-size:1.1rem}.back{font-size:.82rem}.card{padding:22px}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#071a33">
+<title>Criar conta | MAVORA</title>
+<meta name="description" content="Acesse sua conta MAVORA com segurança.">
+<style>
+:root{--navy:#071a33;--navy2:#0c2748;--ink:#14243a;--muted:#64748b;--white:#fff;--cyan:#25c4df;--blue:#168be8;--line:#dbe5ef;--soft:#f4f8fc}
+*{box-sizing:border-box}html{min-height:100%;background:#071a33}body{margin:0;min-height:100vh;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(circle at 85% 5%,#16466a 0,transparent 34%),linear-gradient(145deg,#071a33,#0c2748 70%,#09213d);display:flex;flex-direction:column}
+a{color:inherit;text-decoration:none}.top{width:min(1120px,calc(100% - 40px));margin:0 auto;padding:25px 0;display:flex;align-items:center;justify-content:space-between;color:white;border-bottom:1px solid #ffffff20}.brand{font-size:25px;font-weight:850;letter-spacing:2px}.brand span{color:#62d9ec}.topnav{display:flex;gap:20px;align-items:center;font-size:14px;color:#d5e5f4}.topnav a:hover{color:#65dcef}
+main{width:min(1120px,calc(100% - 40px));margin:auto;flex:1;display:grid;grid-template-columns:1.05fr .95fr;gap:55px;align-items:center;padding:55px 0}.intro{color:white}.eyebrow{font-size:12px;letter-spacing:2.4px;font-weight:800;color:#67d8eb;text-transform:uppercase}.intro h1{font-size:clamp(34px,5vw,54px);line-height:1.08;letter-spacing:-1.8px;margin:18px 0}.intro p{font-size:17px;line-height:1.8;color:#c6d7e8;max-width:520px}.points{display:grid;gap:13px;margin-top:30px;color:#d8e7f5;font-size:14px}.points div:before{content:"✓";color:#61d9e9;font-weight:900;margin-right:10px}
+.panel{background:#fff;border-radius:24px;padding:34px;box-shadow:0 24px 70px #0005}.panel h2{margin:0 0 8px;font-size:27px;letter-spacing:-.6px}.sub{margin:0 0 25px;color:#718096;font-size:14px;line-height:1.6}.field{margin:16px 0}.field label{display:block;font-size:13px;font-weight:750;margin-bottom:8px}.field input{width:100%;padding:15px 14px;border:1px solid #d6e0ea;border-radius:12px;font-size:15px;outline:none;background:#fbfdff;color:#14243a}.field input:focus{border-color:#1da9d1;box-shadow:0 0 0 3px #1da9d122}.btn{border:0;width:100%;padding:15px;border-radius:12px;background:linear-gradient(100deg,#22c4dc,#168be8);color:#05213c;font-size:15px;font-weight:850;cursor:pointer;margin-top:8px}.btn:disabled{opacity:.65;cursor:wait}.message{display:none;margin-top:16px;padding:13px;border-radius:11px;font-size:13px;line-height:1.55}.message.show{display:block}.message.ok{background:#e9f8ef;color:#17633a}.message.err{background:#fff0f0;color:#a32b2b}.switch{margin-top:20px;text-align:center;font-size:13px;color:#64748b}.switch a{color:#087fb8;font-weight:800}.fine{font-size:11px;color:#8996a5;line-height:1.5;margin-top:17px}.footer{padding:20px;text-align:center;color:#9db1c6;font-size:12px}
+@media(max-width:800px){main{grid-template-columns:1fr;gap:28px;padding:35px 0}.intro h1{font-size:39px}.intro p{font-size:15px}.panel{padding:25px 22px}.top{width:calc(100% - 32px)}.topnav{gap:12px;font-size:12px}main{width:calc(100% - 32px)}}
+</style>
 </head>
 <body>
-  <header class="top">
-    <div class="wrap nav">
-      <a class="brand" href="index.html"><span class="mark">M</span>MAVORA</a>
-      <a class="back" href="index.html">← Voltar para o início</a>
-    </div>
-  </header>
+<header class="top">
+  <a class="brand" href="index.html">MAV<span>O</span>RA</a>
+  <nav class="topnav"><a href="index.html">Página inicial</a><a href="cadastro.html">Criar conta</a><a href="login.html">Entrar</a></nav>
+</header>
+<main>
+  <section class="intro">
+    <div class="eyebrow">Gestão de preços mais clara</div>
+    <h1>Sua jornada de precificação começa aqui.</h1>
+    <p>Crie sua conta para acessar as ferramentas MAVORA, acompanhar seus produtos e organizar suas decisões de preço.</p>
+    <div class="points"><div>Suas ferramentas de precificação em um só lugar</div><div>Materiais informativos para decisões melhores</div><div>Uma experiência simples e organizada</div></div>
+  </section>
+  <section class="panel">
+    <h2>Criar minha conta</h2>
+    <p class="sub">Preencha os dados abaixo para começar.</p>
+    <form id="auth-form">
+      <div class="field"><label for="name">Nome completo</label><input id="name" name="name" type="text" placeholder="Como podemos chamar você?" autocomplete="name" required></div>
+<div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" placeholder="voce@exemplo.com" autocomplete="email" required></div>
+<div class="field"><label for="password">Senha</label><input id="password" name="password" type="password" placeholder="Mínimo de 8 caracteres" autocomplete="new-password" required></div>
+      <button class="btn" id="submit-btn" type="submit">Criar minha conta</button>
+    </form>
+    <div id="message" class="message" role="status" aria-live="polite"></div>
+    <div class="switch">Já tem uma conta? <a href="login.html">Entrar</a></div>
+    <p class="fine">Seus dados de acesso são processados pelo Supabase. Nunca compartilhe sua senha com ninguém.</p>
+  </section>
+</main>
+<footer class="footer">MAVORA · Preço inteligente. Decisões com clareza.</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://rwokprrjtyhdpgkkcndh.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_vz0fkm8_qcDtDQzKt7MpQw_hvovt44v';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
-  <main class="wrap">
-    <div class="layout">
-      <section class="intro">
-        <span class="eyebrow">Sua área MAVORA</span>
-        <h1>Organize seus preços com mais clareza.</h1>
-        <p>Crie sua conta para acessar sua área de cliente, conhecer a demonstração da Calculadora Clássica e acompanhar os produtos que adquirir.</p>
-        <div class="benefits">
-          <div class="benefit"><span class="check">✓</span><span>Uma simulação gratuita da Calculadora Clássica, após a ativação do cadastro.</span></div>
-          <div class="benefit"><span class="check">✓</span><span>Área para consultar seus produtos e materiais.</span></div>
-          <div class="benefit"><span class="check">✓</span><span>Relatórios organizados em um só lugar.</span></div>
-          <div class="benefit"><span class="check">✓</span><span>Sem mensalidade nos produtos: pagamento único.</span></div>
-        </div>
-      </section>
+const form=document.getElementById('auth-form'),btn=document.getElementById('submit-btn'),box=document.getElementById('message');
+function show(text,type){box.textContent=text;box.className='message show '+type}
+form.addEventListener('submit',async(e)=>{
+ e.preventDefault();box.className='message';btn.disabled=true;btn.textContent='Criando sua conta...';
+ const name=document.getElementById('name').value.trim();
+ const email=document.getElementById('email').value.trim();
+ const password=document.getElementById('password').value;
+ if(password.length<8){show('Use uma senha com pelo menos 8 caracteres.','err');btn.disabled=false;btn.textContent='Criar minha conta';return}
+ try{
+  const {data,error}=await supabaseClient.auth.signUp({
+   email,password,options:{data:{full_name:name},emailRedirectTo:new URL('login.html',window.location.href).href}
+  });
+  if(error)throw error;
+  if(data.session){show('Conta criada e acesso iniciado. A próxima etapa será preparar seu painel.','ok')}
+  else{show('Cadastro recebido! Confira sua caixa de entrada e confirme seu e-mail antes de entrar. Se não encontrar, verifique também o spam.','ok')}
+  form.reset();
+ }catch(err){show(err.message||'Não foi possível criar a conta. Tente novamente.','err')}
+ finally{btn.disabled=false;btn.textContent='Criar minha conta'}
+});
 
-      <section class="card" aria-labelledby="form-title">
-        <div class="card-head">
-          <h2 id="form-title">Criar minha conta</h2>
-          <p>Preencha seus dados para começar.</p>
-        </div>
-        <form id="signup-form">
-          <div class="field">
-            <label for="name">Nome completo</label>
-            <input id="name" name="name" type="text" placeholder="Como podemos chamar você?" autocomplete="name" required>
-          </div>
-          <div class="field">
-            <label for="email">E-mail</label>
-            <input id="email" name="email" type="email" placeholder="voce@exemplo.com" autocomplete="email" required>
-          </div>
-          <div class="field">
-            <label for="password">Criar senha</label>
-            <div class="password-wrap">
-              <input id="password" name="password" type="password" placeholder="Crie uma senha segura" autocomplete="new-password" minlength="8" required>
-              <button class="show" type="button" data-target="password">Mostrar</button>
-            </div>
-            <div class="hint">Use pelo menos 8 caracteres.</div>
-          </div>
-          <div class="field">
-            <label for="confirm">Confirmar senha</label>
-            <div class="password-wrap">
-              <input id="confirm" name="confirm" type="password" placeholder="Digite a senha novamente" autocomplete="new-password" minlength="8" required>
-              <button class="show" type="button" data-target="confirm">Mostrar</button>
-            </div>
-          </div>
-          <label class="terms">
-            <input type="checkbox" id="accept" required>
-            <span>Li e aceito os <a href="termos.html">Termos de Uso</a> e a <a href="privacidade.html">Política de Privacidade</a>.</span>
-          </label>
-          <button class="submit" type="submit">Criar conta <span aria-hidden="true">→</span></button>
-          <div class="message" id="message" role="status"></div>
-        </form>
-        <p class="login">Já tem uma conta? <a href="login.html">Entrar</a></p>
-        <div class="security"><span>♢</span> Seus dados devem ser protegidos com segurança.</div>
-      </section>
-    </div>
-  </main>
-  <footer>© <span id="year"></span> MAVORA. Todos os direitos reservados.</footer>
-
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    document.querySelectorAll('.show').forEach(button => {
-      button.addEventListener('click', () => {
-        const field = document.getElementById(button.dataset.target);
-        const showing = field.type === 'text';
-        field.type = showing ? 'password' : 'text';
-        button.textContent = showing ? 'Mostrar' : 'Ocultar';
-      });
-    });
-    document.getElementById('signup-form').addEventListener('submit', event => {
-      event.preventDefault();
-      const password = document.getElementById('password').value;
-      const confirm = document.getElementById('confirm').value;
-      const message = document.getElementById('message');
-      message.style.display = 'block';
-      if (password !== confirm) {
-        message.textContent = 'As senhas não coincidem. Confira os dois campos.';
-        return;
-      }
-      message.textContent = 'A tela de cadastro está pronta, mas o registro de contas ainda precisa ser conectado ao sistema seguro de autenticação da MAVORA. Nenhuma senha foi enviada ou armazenada.';
-    });
-  </script>
+</script>
 </body>
 </html>
